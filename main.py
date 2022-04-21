@@ -1,21 +1,18 @@
 import pygame
 from dominoes.constants import WIDTH, HEIGHT
-from dominoes.board import Board
+from dominoes.game import Game
 
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))  # set window dimensions
 pygame.display.set_caption('Dominoes')  # set window caption
 
 FPS = 60
 
-players = 2
-dominoes_per_player = 7
-
 
 def main():
     # main game loop
     run = True
     clock = pygame.time.Clock()
-    board = Board(players, dominoes_per_player)  # create a board
+    game = Game(WIN)
 
     while run:  # event loop
         clock.tick(FPS)  # set FPS
@@ -26,8 +23,8 @@ def main():
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pass
-        board.draw(WIN)
-        pygame.display.update()
+
+        game.update()
 
     pygame.quit()
 
@@ -42,5 +39,5 @@ main()
 # This allows the game to display both players' dominoes,
 # but not at the same time, and to set a time limit for 1 turn
 
-# the game must also display the back of the opponent's dominoes on top
+# the game must also display the back of the opponent's dominoes
 # so that the other player knows the number of dominoes his oppenent has left

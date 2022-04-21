@@ -14,5 +14,6 @@ class Game:
         self.win = win
 
     def update(self):
-        self.board.draw_background()
+        # update the board
+        self.board.draw(self.win)
         pygame.display.update()

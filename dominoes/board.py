@@ -1,6 +1,6 @@
 from random import randint
 from .constants import CRIMSON_RED, ROWS, COLS  # relative import
-from .domino import Domino
+from .half_domino import HalfDomino
 
 
 class Board:
@@ -40,19 +40,21 @@ class Board:
 
     def from_stock_to_hand(self, i, row, col):
         # select a random domino value from stock
-        # create the corresponding domino
-        # add it to the internal representation of the board,
+        # create the 2 corresponding half dominoes
+        # add them to the internal representation of the board,
         # in the player's hand (vertically)
         # remove the domino value from stock
-        # set the domino as not in stock
+        # set the half dominoes as not in stock
         # and return the value for it to be reused
         domino_value = self.domino_values[randint(0, i)]  # random domino value
-        domino = Domino(row, col, row + 1, col, domino_value)  # create domino
-        self.board[row].append(domino)
+        half_domino_1 = HalfDomino(row, col, domino_value[0])  # create domino
+        half_domino_2 = HalfDomino(row + 1, col, domino_value[1])
+        self.board[row].append(half_domino_1)
         self.board.append([])
-        self.board[row + 1].append(domino)
+        self.board[row + 1].append(half_domino_2)
         self.domino_values.remove(domino_value)
-        domino.draw_from_stock()
+        half_domino_1.draw_from_stock()
+        half_domino_2.draw_from_stock()
         return domino_value
 
     def create_board(self):
@@ -62,7 +64,7 @@ class Board:
         self.fill_domino_values()
         i = 27  # counts the number of dominoes drawn, decreasing from 27
         # and makes sure the right number of dominoes is drawn
-        while i > 27 - self.nb_players * self.nb_dominoes_per_player:
+        while i >= 27 - self.nb_players * self.nb_dominoes_per_player:
             for row in range(ROWS):
                 # rows 1 & 15 will be added when putting
                 # the 1st domino on rows 0 & 14
@@ -79,16 +81,16 @@ class Board:
                             self.player1_dominoes.append(domino_value)
                             i -= 1
                         elif row != 1 and row != 15:
-                            self.board[row].append(0)
+                            self.board[row].append('x')
                     else:
-                        if row != 1 and row != 15:
-                            self.board[row].append(0)
+                        self.board[row].append('x')
 
     def draw(self, win):
         # draw the background and the dominoes in the window (GUI)
         self.draw_background(win)
+        print(self.board)
         for row in range(ROWS):
             for col in range(COLS):
-                domino = self.board[row][col]
-                if domino != 0 and row != 1 and row != 15:
-                    domino.draw(win)
+                half_domino = self.board[row][col]
+                if half_domino != 'x':
+                    half_domino.draw(win)

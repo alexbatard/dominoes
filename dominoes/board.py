@@ -10,12 +10,6 @@ class Board:
             or nb_players == 4
         assert nb_players * nb_dominoes_per_player <= 28
         self.board = []  # internal representation of the board: 2D list
-
-        # example with a 5x3 board and 4 dominoes:
-        # [[-, 6, -, 5, 1],
-        #  [-, 3, -, 5, -],
-        #  [-, 3, 4, 4, -]]
-
         self.nb_players = nb_players
         self.nb_dominoes_per_player = nb_dominoes_per_player
         self.domino_values = []  # list of tuples ex: (5, 3),
@@ -28,6 +22,7 @@ class Board:
 # when the player puts a domino on the board, remove the  domino from the list
 # when he draws a domino from the stock, add it to the list
 # the list gives access to the number of dominoes left per player (using len())
+        self.create_board()
 
     def draw_background(self, win):
         # draw the background of the board in the window (GUI)
@@ -64,7 +59,7 @@ class Board:
         # create internal representation of the board
         # at the beginning of the game
         # represents the game setup: dealing dominoes to the players
-        Board.fill_domino_values()
+        self.fill_domino_values()
         i = 27  # counts the number of dominoes drawn, decreasing from 27
         # and makes sure the right number of dominoes is drawn
         while i > 27 - self.nb_players * self.nb_dominoes_per_player:
@@ -90,10 +85,10 @@ class Board:
                             self.board[row].append(0)
 
     def draw(self, win):
-        # draw the background and the pieces in the window (GUI)
+        # draw the background and the dominoes in the window (GUI)
         self.draw_background(win)
         for row in range(ROWS):
             for col in range(COLS):
-                piece = self.board[row][col]
-                if piece != 0:
-                    piece.draw(win)
+                domino = self.board[row][col]
+                if domino != 0 and row != 1 and row != 15:
+                    domino.draw(win)

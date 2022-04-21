@@ -31,6 +31,11 @@ class Tests(unittest.TestCase):
         board.fill_domino_values()
         self.assertEqual(len(board.domino_values), 28)
 
+    def test_create_board(self):
+        board = Board(2, 2)
+        self.assertEqual(len(board.board), 16)
+        self.assertEqual(len(board.board[0]), 10)
+
     def test_calc_pos(self):
         half_domino = HalfDomino(0, 1, 5)
         self.assertEqual(half_domino.x, SQUARE_SIZE + SQUARE_SIZE // 2)

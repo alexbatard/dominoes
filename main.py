@@ -12,6 +12,7 @@ dominoes_per_player = 7
 
 
 def main():
+    # main game loop
     run = True
     clock = pygame.time.Clock()
     board = Board(players, dominoes_per_player)  # create a board
@@ -25,7 +26,7 @@ def main():
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pass
-        board.draw_board(WIN)
+        board.draw_background(WIN)
         pygame.display.update()
 
     pygame.quit()

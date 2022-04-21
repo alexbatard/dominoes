@@ -11,7 +11,7 @@ class Game:
         self.board = Board(players, dominoes_per_player)
         self.turn = 'player1'  # whose turn is it?
         self.valid_moves = {}  # current valid moves
-        self.win = win
+        self.win = win  # game window
 
     def update(self):
         # update the board

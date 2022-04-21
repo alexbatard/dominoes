@@ -22,6 +22,7 @@ class Board:
 # when the player puts a domino on the board, remove the  domino from the list
 # when he draws a domino from the stock, add it to the list
 # the list gives access to the number of dominoes left per player (using len())
+
         self.create_board()
 
     def draw_background(self, win):

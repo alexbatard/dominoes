@@ -1,4 +1,5 @@
-from .constants import SQUARE_SIZE
+import pygame
+from .constants import SQUARE_SIZE, WHITE
 
 
 class HalfDomino:
@@ -35,8 +36,14 @@ class HalfDomino:
         pass
 
     def draw(self, win):
+        # side = SQUARE_SIZE
+        radius = SQUARE_SIZE // 2
+        # pygame.draw.rect(win, WHITE, [self.x, self.y, side, side])
+        # pygame.draw.rect(win, WHITE, (self.x, self.y, side - 5, side - 5))
+        pygame.draw.circle(win, WHITE, (self.x, self.y), radius)
+
         # draw half domino on the window
-        pass
+
         # format a str with self.value to select the right image
         # ex for selecting the right image:
         # f"half_domino_{domino.value}.jpg"

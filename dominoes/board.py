@@ -27,7 +27,8 @@ class Board:
         # the list gives access to the number of dominoes
         # left per player (using len())
 
-        self.create_board()
+        self.create_board()  # when the object is created,
+        # the board is automatically created
 
     def draw_background(self, win):
         # draw the background of the board in the window (GUI)
@@ -73,17 +74,17 @@ class Board:
         for row in range(ROWS):
             # rows 1 & 15 will be added when putting
             # the 1st domino on rows 0 & 14
-            if row != 1 and row != 15:
+            if row != 1 and row != ROWS - 1:
                 self.board.append([])  # 1 list per row
             for col in range(COLS):
                 if col < self.nb_dominoes_per_player:
                     if row == 0:
                         domino_value = self.from_stock_to_hand(row, col)
                         self.player2_dominoes.append(domino_value)
-                    elif row == 14:
+                    elif row == ROWS - 2:
                         domino_value = self.from_stock_to_hand(row, col)
                         self.player1_dominoes.append(domino_value)
-                    elif row != 1 and row != 15:
+                    elif row != 1 and row != ROWS - 1:
                         self.board[row].append('x')
                 else:
                     self.board[row].append('x')

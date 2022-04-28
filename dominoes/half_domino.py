@@ -1,5 +1,5 @@
 import pygame
-from .constants import SQUARE_SIZE, WHITE
+from .constants import SQUARE_SIZE, DOMINO_BACK
 
 
 class HalfDomino:
@@ -35,19 +35,16 @@ class HalfDomino:
         # change state of the half domino
         pass
 
-    def draw(self, win):
-        # side = SQUARE_SIZE
-        radius = SQUARE_SIZE // 2
-        # pygame.draw.rect(win, WHITE, [self.x, self.y, side, side])
-        # pygame.draw.rect(win, WHITE, (self.x, self.y, side - 5, side - 5))
-        pygame.draw.circle(win, WHITE, (self.x, self.y), radius)
-
-        # draw half domino on the window
-
-        # format a str with self.value to select the right image
-        # ex for selecting the right image:
-        # f"half_domino_{domino.value}.jpg"
+    def draw_current_player(self, win):
+        domino_image = pygame.transform.scale(
+            pygame.image.load(f"assets/dom_{self.value}.png"), (40, 40))
+        win.blit(domino_image, (self.x - domino_image.get_width() // 2,
+                                self.y - domino_image.get_height() // 2))
         # rotate the image if necessary depending on self.direction
+
+    def draw_opponent(self, win):
+        win.blit(DOMINO_BACK, (self.x - DOMINO_BACK.get_width() // 2,
+                               self.y - DOMINO_BACK.get_height() // 2))
 
     def __repr__(self):
         return str(self.value)

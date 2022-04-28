@@ -1,5 +1,8 @@
 from random import randint
-from .constants import CRIMSON_RED, ROWS, COLS  # relative import
+import pygame
+# relative imports
+from .constants import LIGHT_CYAN, PALE_TURQUOISE, TEAL, ROWS, COLS,\
+    SQUARE_SIZE
 from .half_domino import HalfDomino
 
 
@@ -32,7 +35,17 @@ class Board:
 
     def draw_background(self, win):
         # draw the background of the board in the window (GUI)
-        win.fill(CRIMSON_RED)
+        win.fill(LIGHT_CYAN)
+        for row in range(ROWS):
+            for col in range(row % 2, COLS, 2):
+                pygame.draw.rect(win, PALE_TURQUOISE,
+                                 (col * SQUARE_SIZE, row * SQUARE_SIZE,
+                                  SQUARE_SIZE, SQUARE_SIZE))
+            if 0 <= row <= 2 or ROWS - 3 <= row <= ROWS - 1:
+                for col in range(COLS):
+                    pygame.draw.rect(win, TEAL,
+                                     (col * SQUARE_SIZE, row * SQUARE_SIZE,
+                                      SQUARE_SIZE, SQUARE_SIZE))
 
     def fill_domino_values(self):
         # fills the domino_values variable with all the values
@@ -97,4 +110,7 @@ class Board:
             for col in range(COLS):
                 half_domino = self.board[row][col]
                 if half_domino != 'x':
-                    half_domino.draw(win)
+                    if 0 <= row <= 1:
+                        half_domino.draw_opponent(win)
+                    else:
+                        half_domino.draw_current_player(win)

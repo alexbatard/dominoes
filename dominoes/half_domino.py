@@ -16,35 +16,35 @@ class HalfDomino:
 
         self.x = 0
         self.y = 0
-        self.calc_pos()
+        self.calcPos()
 
-    def calc_pos(self):
+    def calcPos(self):
         # calculate x and y position based on the current row and column
         self.x = SQUARE_SIZE * self.col + SQUARE_SIZE // 2
         self.y = SQUARE_SIZE * self.row + SQUARE_SIZE // 2
 
-    def place_on_board(self):
+    def placeOnBoard(self):
         # change state of the half domino
         self.is_on_board = True
 
-    def draw_from_stock(self):
+    def drawFromStock(self):
         # change state of the half domino
         self.is_in_stock = False
 
-    def change_orientation(self):
+    def changeOrientation(self):
         # change state of the half domino
         pass
 
-    def draw_current_player(self, win):
-        domino_image = pygame.transform.scale(
+    def drawCurrentPlayer(self, win):
+        DOMINO_IMAGE = pygame.transform.scale(
             pygame.image.load(f"assets/dom_{self.value}.png"), (40, 40))
-        win.blit(domino_image, (self.x - domino_image.get_width() // 2,
-                                self.y - domino_image.get_height() // 2))
+        DOMINO_IMAGE_RECT = DOMINO_IMAGE.get_rect(center=(self.x, self.y))
+        win.blit(DOMINO_IMAGE, DOMINO_IMAGE_RECT)
         # rotate the image if necessary depending on self.direction
 
-    def draw_opponent(self, win):
-        win.blit(DOMINO_BACK, (self.x - DOMINO_BACK.get_width() // 2,
-                               self.y - DOMINO_BACK.get_height() // 2))
+    def drawOpponent(self, win):
+        DOMINO_BACK_RECT = DOMINO_BACK.get_rect(center=(self.x, self.y))
+        win.blit(DOMINO_BACK, DOMINO_BACK_RECT)
 
     def __repr__(self):
         return str(self.value)

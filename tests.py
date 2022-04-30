@@ -28,7 +28,7 @@ class Tests(unittest.TestCase):
 
     def test_fill_domino_values(self):
         board = Board(2, 7)
-        board.fill_domino_values()
+        board.fillDominoValues()
         self.assertEqual(len(board.domino_values), 28)
 
     def test_create_board(self):

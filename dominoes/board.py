@@ -30,10 +30,10 @@ class Board:
         # the list gives access to the number of dominoes
         # left per player (using len())
 
-        self.create_board()  # when the object is created,
+        self.createBoard()  # when the object is created,
         # the board is automatically created
 
-    def draw_background(self, win):
+    def drawBackground(self, win):
         # draw the background of the board in the window (GUI)
         win.fill(LIGHT_CYAN)
         for row in range(ROWS):
@@ -47,7 +47,7 @@ class Board:
                                      (col * SQUARE_SIZE, row * SQUARE_SIZE,
                                       SQUARE_SIZE, SQUARE_SIZE))
 
-    def fill_domino_values(self):
+    def fillDominoValues(self):
         # fills the domino_values variable with all the values
         # possible for dominoes
         # (represents the stock at the beginning of the game)
@@ -57,7 +57,7 @@ class Board:
                     if (j, i) not in self.domino_values:  # no doubles
                         self.domino_values.append((i, j))
 
-    def from_stock_to_hand(self, row, col):
+    def fromStockToHand(self, row, col):
         # select a random domino value from stock
         # create the 2 corresponding half dominoes
         # add them to the internal representation of the board,
@@ -75,15 +75,15 @@ class Board:
             self.board.append([])
         self.board[row + 1].append(half_domino_2)
         self.domino_values.remove(domino_value)
-        half_domino_1.draw_from_stock()
-        half_domino_2.draw_from_stock()
+        half_domino_1.drawFromStock()
+        half_domino_2.drawFromStock()
         return domino_value
 
-    def create_board(self):
+    def createBoard(self):
         # create internal representation of the board
         # at the beginning of the game
         # represents the game setup: dealing dominoes to the players
-        self.fill_domino_values()
+        self.fillDominoValues()
         for row in range(ROWS):
             # rows 1 & 15 will be added when putting
             # the 1st domino on rows 0 & 14
@@ -92,10 +92,10 @@ class Board:
             for col in range(COLS):
                 if col < self.nb_dominoes_per_player:
                     if row == 0:
-                        domino_value = self.from_stock_to_hand(row, col)
+                        domino_value = self.fromStockToHand(row, col)
                         self.player2_dominoes.append(domino_value)
                     elif row == ROWS - 2:
-                        domino_value = self.from_stock_to_hand(row, col)
+                        domino_value = self.fromStockToHand(row, col)
                         self.player1_dominoes.append(domino_value)
                     elif row != 1 and row != ROWS - 1:
                         self.board[row].append('x')
@@ -105,7 +105,7 @@ class Board:
 
     def draw(self, win):
         # draw the background and the dominoes in the window (GUI)
-        self.draw_background(win)
+        self.drawBackground(win)
         for row in range(ROWS):
             for col in range(COLS):
                 half_domino = self.board[row][col]

@@ -111,6 +111,6 @@ class Board:
                 half_domino = self.board[row][col]
                 if half_domino != 'x':
                     if 0 <= row <= 1:
-                        half_domino.draw_opponent(win)
+                        half_domino.drawOpponent(win)
                     else:
-                        half_domino.draw_current_player(win)
+                        half_domino.drawCurrentPlayer(win)

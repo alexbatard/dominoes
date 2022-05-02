@@ -21,7 +21,9 @@ class Button:
         win.blit(self.text, self.text_rect)
 
     def checkForInput(self, mouse_pos):
-        if mouse_pos[0] in range(self.rect.left, self.rect.right) and mouse_pos[1] in range(self.rect.top, self.rect.bottom):
+        if mouse_pos[0] in range(self.rect.left,
+                                 self.rect.right) and mouse_pos[1] in range(
+                                     self.rect.top, self.rect.bottom):
             return True
         return False
 

@@ -47,7 +47,7 @@ def main_menu():  # main menu screen
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
-                    name_selection()
+                    play()
                 # if WIDTH / 3 - 60 <= MENU_MOUSE_POS[0] <= WIDTH / 3 + 60 and\
                 #         HEIGHT / 2 - 25 <= MENU_MOUSE_POS[1] <= HEIGHT / 2\
                 #         + 25:

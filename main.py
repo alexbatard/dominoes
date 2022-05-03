@@ -47,7 +47,7 @@ def main_menu():  # main menu screen
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
-                    play()
+                    name_selection()
                 # if WIDTH / 3 - 60 <= MENU_MOUSE_POS[0] <= WIDTH / 3 + 60 and\
                 #         HEIGHT / 2 - 25 <= MENU_MOUSE_POS[1] <= HEIGHT / 2\
                 #         + 25:
@@ -77,6 +77,10 @@ def name_selection():
     PLAYER2_NAME_INPUT = ''
 
     while True:
+        WIN.fill(TEAL)
+        PLAYER1_NAME = SMALL_FONT.render(PLAYER1_NAME_INPUT, True, BLACK)
+        PLAYER2_NAME = SMALL_FONT.render(PLAYER2_NAME_INPUT, True, BLACK)
+        WIN.blit(PLAYER1_NAME, (0, 0))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -85,11 +89,6 @@ def name_selection():
 
             if event.type == pygame.KEYDOWN:
                 PLAYER1_NAME_INPUT += event.unicode
-
-            WIN.fill(TEAL)
-            PLAYER1_NAME = SMALL_FONT.render(PLAYER1_NAME_INPUT, True, BLACK)
-            PLAYER2_NAME = SMALL_FONT.render(PLAYER2_NAME_INPUT, True, BLACK)
-            WIN.blit(PLAYER1_NAME, (0, 0))
 
         pygame.display.update()
 

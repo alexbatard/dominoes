@@ -1,8 +1,10 @@
 import pygame
 import sys
 from dominoes.constants import WIDTH, HEIGHT, TEAL, LIGHT_CYAN, BLACK, WHITE
-from gui.constants import SMALL_FONT, DOMINOES_TEXT, PLAY_TEXT, QUIT_TEXT,\
-     DOMINOES_RECT, PLAY_RECT, QUIT_RECT, BUTTON
+from gui.constants import SMALL_FONT, DOMINOES_TEXT, DOMINOES_RECT,\
+     SELECT_MODE_TEXT, SELECT_MODE_RECT, BUTTON,\
+     SELECT_COMPUTER_DIFFICULTY_TEXT, SELECT_COMPUTER_DIFFICULTY_RECT,\
+     BACKGROUND
 from dominoes.game import Game
 from gui.button import Button
 
@@ -17,7 +19,8 @@ def main_menu():  # main menu screen
     pygame.display.set_caption('Main menu')
 
     while True:
-        WIN.fill(TEAL)
+        # WIN.fill(TEAL)
+        WIN.blit(BACKGROUND, (0, 0))
         MENU_MOUSE_POS = pygame.mouse.get_pos()
 
         PLAY_BUTTON = Button(pos=(WIDTH / 3, HEIGHT / 2),
@@ -25,14 +28,14 @@ def main_menu():  # main menu screen
                              image=BUTTON,
                              base_color=BLACK,
                              hovering_color=WHITE,
-                             text_input="PLAY")
+                             text_input="Play")
 
         QUIT_BUTTON = Button(pos=(2 * WIDTH / 3, HEIGHT / 2),
                              font=SMALL_FONT,
                              image=BUTTON,
                              base_color=BLACK,
                              hovering_color=WHITE,
-                             text_input="QUIT")
+                             text_input="Quit")
 
         WIN.blit(DOMINOES_TEXT, DOMINOES_RECT)
 
@@ -47,37 +50,152 @@ def main_menu():  # main menu screen
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
-                    name_selection()
-                # if WIDTH / 3 - 60 <= MENU_MOUSE_POS[0] <= WIDTH / 3 + 60 and\
-                #         HEIGHT / 2 - 25 <= MENU_MOUSE_POS[1] <= HEIGHT / 2\
-                #         + 25:
-                    # name_selection()
+                    gamemode_menu()
 
-                # elif 2 * WIDTH / 3 - 60 <= MENU_MOUSE_POS[0] <= 2 * \
-                #         WIDTH / 3 + 60 and HEIGHT / 2 - \
-                #         50 <= MENU_MOUSE_POS[1] <= HEIGHT / 2 + 50:
                 if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
                     pygame.quit()
                     sys.exit()
 
-            # pygame.draw.rect(WIN, LIGHT_CYAN,
-            #                  [WIDTH / 3 - 60, HEIGHT / 2 - 25, 120, 50])
-            # pygame.draw.rect(WIN, LIGHT_CYAN,
-            #                  [2 * WIDTH / 3 - 60, HEIGHT / 2 - 25, 120, 50])
+        pygame.display.update()
 
-            # WIN.blit(PLAY_TEXT, PLAY_RECT)
-            # WIN.blit(QUIT_TEXT, QUIT_RECT)
+
+def gamemode_menu():
+    pygame.display.set_caption("Gamemode selection")
+
+    while True:
+        # WIN.fill(TEAL)
+        WIN.blit(BACKGROUND, (0, 0))
+
+        GAMEMODE_MOUSE_POS = pygame.mouse.get_pos()
+
+        TWO_PLAYERS_BUTTON = Button(pos=(WIDTH / 2, HEIGHT / 3),
+                                    font=SMALL_FONT,
+                                    image=BUTTON,
+                                    base_color=BLACK,
+                                    hovering_color=WHITE,
+                                    text_input="2 Players")
+
+        THREE_PLAYERS_BUTTON = Button(pos=(WIDTH / 2, 5 * HEIGHT / 12),
+                                      font=SMALL_FONT,
+                                      image=BUTTON,
+                                      base_color=BLACK,
+                                      hovering_color=WHITE,
+                                      text_input="3 Players")
+
+        FOUR_PLAYERS_BUTTON = Button(pos=(WIDTH / 2, HEIGHT / 2),
+                                     font=SMALL_FONT,
+                                     image=BUTTON,
+                                     base_color=BLACK,
+                                     hovering_color=WHITE,
+                                     text_input="4 Players")
+
+        COMPUTER_BUTTON = Button(pos=(WIDTH / 2, 7 * HEIGHT / 12),
+                                 font=SMALL_FONT,
+                                 image=BUTTON,
+                                 base_color=BLACK,
+                                 hovering_color=WHITE,
+                                 text_input="Computer")
+
+        BACK_BUTTON = Button(pos=(WIDTH / 2, 11 * HEIGHT / 12),
+                             font=SMALL_FONT,
+                             image=BUTTON,
+                             base_color=BLACK,
+                             hovering_color=WHITE,
+                             text_input="Back")
+
+        WIN.blit(SELECT_MODE_TEXT, SELECT_MODE_RECT)
+
+        for button in [
+                TWO_PLAYERS_BUTTON, THREE_PLAYERS_BUTTON, FOUR_PLAYERS_BUTTON,
+                COMPUTER_BUTTON, BACK_BUTTON
+        ]:
+            button.changeTextColor(GAMEMODE_MOUSE_POS)
+            button.update(WIN)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if TWO_PLAYERS_BUTTON.checkForInput(GAMEMODE_MOUSE_POS):
+                    name_menu()
+
+                if COMPUTER_BUTTON.checkForInput(GAMEMODE_MOUSE_POS):
+                    computer_difficulty_menu()
+
+                if BACK_BUTTON.checkForInput(GAMEMODE_MOUSE_POS):
+                    main_menu()
 
         pygame.display.update()
 
 
-def name_selection():
+def computer_difficulty_menu():
+    pygame.display.set_caption("Computer difficulty selection")
+
+    while True:
+        # WIN.fill(TEAL)
+        WIN.blit(BACKGROUND, (0, 0))
+
+        COMPUTER_DIFFICULTY_MOUSE_POS = pygame.mouse.get_pos()
+
+        EASY_BUTTON = Button(pos=(WIDTH / 2, HEIGHT / 3),
+                             font=SMALL_FONT,
+                             image=BUTTON,
+                             base_color=BLACK,
+                             hovering_color=WHITE,
+                             text_input="Easy")
+
+        INTERMEDIATE_BUTTON = Button(pos=(WIDTH / 2, 5 * HEIGHT / 12),
+                                     font=SMALL_FONT,
+                                     image=BUTTON,
+                                     base_color=BLACK,
+                                     hovering_color=WHITE,
+                                     text_input="Intermediate")
+
+        HARD_BUTTON = Button(pos=(WIDTH / 2, HEIGHT / 2),
+                             font=SMALL_FONT,
+                             image=BUTTON,
+                             base_color=BLACK,
+                             hovering_color=WHITE,
+                             text_input="Hard")
+
+        BACK_BUTTON = Button(pos=(WIDTH / 2, 11 * HEIGHT / 12),
+                             font=SMALL_FONT,
+                             image=BUTTON,
+                             base_color=BLACK,
+                             hovering_color=WHITE,
+                             text_input="Back")
+
+        WIN.blit(SELECT_COMPUTER_DIFFICULTY_TEXT,
+                 SELECT_COMPUTER_DIFFICULTY_RECT)
+
+        for button in [
+                EASY_BUTTON, INTERMEDIATE_BUTTON, HARD_BUTTON, BACK_BUTTON
+        ]:
+            button.changeTextColor(COMPUTER_DIFFICULTY_MOUSE_POS)
+            button.update(WIN)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if BACK_BUTTON.checkForInput(COMPUTER_DIFFICULTY_MOUSE_POS):
+                    gamemode_menu()
+
+        pygame.display.update()
+
+
+def name_menu():
     pygame.display.set_caption("Name selection")
     PLAYER1_NAME_INPUT = ''
     PLAYER2_NAME_INPUT = ''
 
     while True:
-        WIN.fill(TEAL)
+        # WIN.fill(TEAL)
+        WIN.blit(BACKGROUND, (0, 0))
         PLAYER1_NAME = SMALL_FONT.render(PLAYER1_NAME_INPUT, True, BLACK)
         PLAYER2_NAME = SMALL_FONT.render(PLAYER2_NAME_INPUT, True, BLACK)
         WIN.blit(PLAYER1_NAME, (0, 0))
@@ -113,7 +231,8 @@ def play():  # main game loop
         game.updateBoard()
 
 
-main_menu()
+if __name__ == "__main__":
+    main_menu()
 
 # When 2, 3 or 4 players are playing on the same computer,
 # the current player needs to press a button to start his turn.

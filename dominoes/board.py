@@ -2,7 +2,7 @@ from random import randint
 import pygame
 # relative imports
 from .constants import LIGHT_CYAN, PALE_TURQUOISE, TEAL, ROWS, COLS,\
-    SQUARE_SIZE, BLUE
+    SQUARE_SIZE
 from .half_domino import HalfDomino
 
 

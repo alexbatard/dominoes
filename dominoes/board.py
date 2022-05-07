@@ -101,7 +101,7 @@ class Board:
                         self.board[row].append('x')
                 else:
                     self.board[row].append('x')
-        print(self.board)
+        # print(self.board)
 
     def draw(self, win):
         # draw the background and the dominoes in the window (GUI)

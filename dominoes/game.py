@@ -1,4 +1,4 @@
-import pygame
+# import pygame
 from dominoes.board import Board
 
 players = 2
@@ -17,4 +17,4 @@ class Game:
     def updateBoard(self):
         # update the board
         self.board.draw(self.win)
-        pygame.display.update()
+        # pygame.display.update()

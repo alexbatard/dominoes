@@ -1,10 +1,12 @@
 import pygame
 import sys
-from dominoes.constants import WIDTH, HEIGHT, TEAL, LIGHT_CYAN, BLACK, WHITE
+from dominoes.constants import WIDTH, HEIGHT, BLACK, WHITE, AMBER
 from gui.constants import SMALL_FONT, DOMINOES_TEXT, DOMINOES_RECT,\
      SELECT_MODE_TEXT, SELECT_MODE_RECT, BUTTON,\
      SELECT_COMPUTER_DIFFICULTY_TEXT, SELECT_COMPUTER_DIFFICULTY_RECT,\
-     BACKGROUND
+     BACKGROUND, NAME_TEXT_BOX_1, NAME_TEXT_BOX_2, ENTER_PLAYER_NAMES_TEXT,\
+     ENTER_PLAYER_NAMES_RECT, PLAYER1_TEXT, PLAYER1_RECT, PLAYER2_TEXT,\
+     PLAYER2_RECT
 from dominoes.game import Game
 from gui.button import Button
 
@@ -21,7 +23,7 @@ def main_menu():  # main menu screen
     while True:
         # WIN.fill(TEAL)
         WIN.blit(BACKGROUND, (0, 0))
-        MENU_MOUSE_POS = pygame.mouse.get_pos()
+        menu_mouse_pos = pygame.mouse.get_pos()
 
         PLAY_BUTTON = Button(pos=(WIDTH / 3, HEIGHT / 2),
                              font=SMALL_FONT,
@@ -40,7 +42,7 @@ def main_menu():  # main menu screen
         WIN.blit(DOMINOES_TEXT, DOMINOES_RECT)
 
         for button in [PLAY_BUTTON, QUIT_BUTTON]:
-            button.changeTextColor(MENU_MOUSE_POS)
+            button.changeTextColor(menu_mouse_pos)
             button.update(WIN)
 
         for event in pygame.event.get():
@@ -49,10 +51,10 @@ def main_menu():  # main menu screen
                 sys.exit()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
+                if PLAY_BUTTON.checkForInput(menu_mouse_pos):
                     gamemode_menu()
 
-                if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
+                if QUIT_BUTTON.checkForInput(menu_mouse_pos):
                     pygame.quit()
                     sys.exit()
 
@@ -63,10 +65,9 @@ def gamemode_menu():
     pygame.display.set_caption("Gamemode selection")
 
     while True:
-        # WIN.fill(TEAL)
         WIN.blit(BACKGROUND, (0, 0))
 
-        GAMEMODE_MOUSE_POS = pygame.mouse.get_pos()
+        gamemode_mouse_pos = pygame.mouse.get_pos()
 
         TWO_PLAYERS_BUTTON = Button(pos=(WIDTH / 2, HEIGHT / 3),
                                     font=SMALL_FONT,
@@ -109,7 +110,7 @@ def gamemode_menu():
                 TWO_PLAYERS_BUTTON, THREE_PLAYERS_BUTTON, FOUR_PLAYERS_BUTTON,
                 COMPUTER_BUTTON, BACK_BUTTON
         ]:
-            button.changeTextColor(GAMEMODE_MOUSE_POS)
+            button.changeTextColor(gamemode_mouse_pos)
             button.update(WIN)
 
         for event in pygame.event.get():
@@ -118,13 +119,13 @@ def gamemode_menu():
                 sys.exit()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if TWO_PLAYERS_BUTTON.checkForInput(GAMEMODE_MOUSE_POS):
-                    name_menu()
+                if TWO_PLAYERS_BUTTON.checkForInput(gamemode_mouse_pos):
+                    two_players_name_menu()
 
-                if COMPUTER_BUTTON.checkForInput(GAMEMODE_MOUSE_POS):
+                if COMPUTER_BUTTON.checkForInput(gamemode_mouse_pos):
                     computer_difficulty_menu()
 
-                if BACK_BUTTON.checkForInput(GAMEMODE_MOUSE_POS):
+                if BACK_BUTTON.checkForInput(gamemode_mouse_pos):
                     main_menu()
 
         pygame.display.update()
@@ -134,10 +135,9 @@ def computer_difficulty_menu():
     pygame.display.set_caption("Computer difficulty selection")
 
     while True:
-        # WIN.fill(TEAL)
         WIN.blit(BACKGROUND, (0, 0))
 
-        COMPUTER_DIFFICULTY_MOUSE_POS = pygame.mouse.get_pos()
+        computer_difficulty_mouse_pos = pygame.mouse.get_pos()
 
         EASY_BUTTON = Button(pos=(WIDTH / 2, HEIGHT / 3),
                              font=SMALL_FONT,
@@ -173,7 +173,7 @@ def computer_difficulty_menu():
         for button in [
                 EASY_BUTTON, INTERMEDIATE_BUTTON, HARD_BUTTON, BACK_BUTTON
         ]:
-            button.changeTextColor(COMPUTER_DIFFICULTY_MOUSE_POS)
+            button.changeTextColor(computer_difficulty_mouse_pos)
             button.update(WIN)
 
         for event in pygame.event.get():
@@ -182,31 +182,101 @@ def computer_difficulty_menu():
                 sys.exit()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if BACK_BUTTON.checkForInput(COMPUTER_DIFFICULTY_MOUSE_POS):
+                if BACK_BUTTON.checkForInput(computer_difficulty_mouse_pos):
                     gamemode_menu()
 
         pygame.display.update()
 
 
-def name_menu():
+def two_players_name_menu():
     pygame.display.set_caption("Name selection")
-    PLAYER1_NAME_INPUT = ''
-    PLAYER2_NAME_INPUT = ''
+    player1_name_input = ''
+    player2_name_input = ''
+    is_text_box_1_active = False
+    is_text_box_2_active = False
+    text_box_1_color = BLACK
+    text_box_2_color = BLACK
 
     while True:
-        # WIN.fill(TEAL)
         WIN.blit(BACKGROUND, (0, 0))
-        PLAYER1_NAME = SMALL_FONT.render(PLAYER1_NAME_INPUT, True, BLACK)
-        PLAYER2_NAME = SMALL_FONT.render(PLAYER2_NAME_INPUT, True, BLACK)
-        WIN.blit(PLAYER1_NAME, (0, 0))
+
+        name_mouse_pos = pygame.mouse.get_pos()
+        player1_name_text = SMALL_FONT.render(player1_name_input, True, WHITE)
+        player2_name_text = SMALL_FONT.render(player2_name_input, True, WHITE)
+
+        BACK_BUTTON = Button(pos=(WIDTH / 2, 11 * HEIGHT / 12),
+                             font=SMALL_FONT,
+                             image=BUTTON,
+                             base_color=BLACK,
+                             hovering_color=WHITE,
+                             text_input="Back")
+
+        NAME_TEXT_BOX_1.w = max(150, player1_name_text.get_width() + 10)
+        NAME_TEXT_BOX_2.w = max(150, player2_name_text.get_width() + 10)
+
+        if is_text_box_1_active:
+            text_box_1_color = AMBER
+            text_box_2_color = BLACK
+        elif is_text_box_2_active:
+            text_box_1_color = BLACK
+            text_box_2_color = AMBER
+        else:
+            text_box_1_color = BLACK
+            text_box_2_color = BLACK
+
+        pygame.draw.rect(WIN, text_box_1_color, NAME_TEXT_BOX_1)
+        pygame.draw.rect(WIN, text_box_2_color, NAME_TEXT_BOX_2)
+
+        WIN.blit(player1_name_text,
+                 (NAME_TEXT_BOX_1.x + 5, NAME_TEXT_BOX_1.y + 10))
+        WIN.blit(player2_name_text,
+                 (NAME_TEXT_BOX_2.x + 5, NAME_TEXT_BOX_2.y + 10))
+        WIN.blit(ENTER_PLAYER_NAMES_TEXT, ENTER_PLAYER_NAMES_RECT)
+        WIN.blit(PLAYER1_TEXT, PLAYER1_RECT)
+        WIN.blit(PLAYER2_TEXT, PLAYER2_RECT)
+
+        for button in [BACK_BUTTON]:
+            button.changeTextColor(name_mouse_pos)
+            button.update(WIN)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
 
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if NAME_TEXT_BOX_1.collidepoint(event.pos):
+                    is_text_box_1_active = True
+                    is_text_box_2_active = False
+                elif NAME_TEXT_BOX_2.collidepoint(event.pos):
+                    is_text_box_1_active = False
+                    is_text_box_2_active = True
+                else:
+                    is_text_box_1_active = False
+                    is_text_box_2_active = False
+
+                if BACK_BUTTON.checkForInput(name_mouse_pos):
+                    gamemode_menu()
+
             if event.type == pygame.KEYDOWN:
-                PLAYER1_NAME_INPUT += event.unicode
+                if event.key == pygame.K_BACKSPACE:
+                    if is_text_box_1_active:
+                        player1_name_input = player1_name_input[:-1]
+                    if is_text_box_2_active:
+                        player2_name_input = player2_name_input[:-1]
+                elif event.key == pygame.K_RETURN:
+                    global PLAYER1_NAME
+                    global PLAYER2_NAME
+                    PLAYER1_NAME = player1_name_input
+                    PLAYER2_NAME = player2_name_input
+                    play()
+                else:
+                    if is_text_box_1_active and NAME_TEXT_BOX_1.w < 2 * WIDTH\
+                       / 5 - NAME_TEXT_BOX_1.x:
+                        player1_name_input += event.unicode
+                    if is_text_box_2_active and NAME_TEXT_BOX_2.w < 2 * WIDTH\
+                       / 5 - NAME_TEXT_BOX_1.x:
+                        player2_name_input += event.unicode
 
         pygame.display.update()
 
@@ -218,7 +288,13 @@ def play():  # main game loop
 
     while True:  # event loop
         clock.tick(FPS)  # set FPS
-        PLAY_MOUSE_POS = pygame.mouse.get_pos()
+        play_mouse_pos = pygame.mouse.get_pos()
+        PLAYER1_NAME_TEXT = SMALL_FONT.render(PLAYER1_NAME, True, BLACK)
+        PLAYER2_NAME_TEXT = SMALL_FONT.render(PLAYER2_NAME, True, BLACK)
+        PLAYER1_NAME_RECT = PLAYER1_NAME_TEXT.get_rect(center=(35,
+                                                               20 + 40 * 2))
+        PLAYER2_NAME_RECT = PLAYER2_NAME_TEXT.get_rect(center=(35,
+                                                               20 + 40 * 18))
 
         for event in pygame.event.get():  # check if event happened
             if event.type == pygame.QUIT:
@@ -229,6 +305,9 @@ def play():  # main game loop
                 pass
 
         game.updateBoard()
+        WIN.blit(PLAYER1_NAME_TEXT, PLAYER1_NAME_RECT)
+        WIN.blit(PLAYER2_NAME_TEXT, PLAYER2_NAME_RECT)
+        pygame.display.update()
 
 
 if __name__ == "__main__":

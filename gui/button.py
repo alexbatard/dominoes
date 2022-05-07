@@ -24,7 +24,7 @@ class Button:
         if mouse_pos[0] in range(
                 self.rect.left + 20,
                 self.rect.right - 20) and mouse_pos[1] in range(
-                    self.rect.top + 20, self.rect.bottom - 20):
+                    self.rect.top + 25, self.rect.bottom - 40):
             return True
         return False
 

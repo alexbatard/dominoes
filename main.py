@@ -1,12 +1,13 @@
 import pygame
 import sys
-from dominoes.constants import WIDTH, HEIGHT, BLACK, WHITE, AMBER
+from dominoes.constants import WIDTH, HEIGHT, BLACK, WHITE, AMBER, ROWS,\
+     SQUARE_SIZE
 from gui.constants import SMALL_FONT, DOMINOES_TEXT, DOMINOES_RECT,\
      SELECT_MODE_TEXT, SELECT_MODE_RECT, BUTTON,\
      SELECT_COMPUTER_DIFFICULTY_TEXT, SELECT_COMPUTER_DIFFICULTY_RECT,\
      BACKGROUND, NAME_TEXT_BOX_1, NAME_TEXT_BOX_2, ENTER_PLAYER_NAMES_TEXT,\
      ENTER_PLAYER_NAMES_RECT, PLAYER1_TEXT, PLAYER1_RECT, PLAYER2_TEXT,\
-     PLAYER2_RECT
+     PLAYER2_RECT, PRESS_ENTER_TEXT, PRESS_ENTER_RECT
 from dominoes.game import Game
 from gui.button import Button
 
@@ -15,6 +16,13 @@ WIN = pygame.display.set_mode((WIDTH, HEIGHT))  # set window dimensions
 pygame.display.set_caption("Main menu")  # set window caption
 
 FPS = 60  # frames per second
+
+
+def get_row_col_from_mouse(pos):
+    x, y = pos
+    row = y // SQUARE_SIZE
+    col = x // SQUARE_SIZE
+    return row, col
 
 
 def main_menu():  # main menu screen
@@ -211,8 +219,8 @@ def two_players_name_menu():
                              hovering_color=WHITE,
                              text_input="Back")
 
-        NAME_TEXT_BOX_1.w = max(150, player1_name_text.get_width() + 10)
-        NAME_TEXT_BOX_2.w = max(150, player2_name_text.get_width() + 10)
+        NAME_TEXT_BOX_1.w = max(150, player1_name_text.get_width() + 9)
+        NAME_TEXT_BOX_2.w = max(150, player2_name_text.get_width() + 9)
 
         if is_text_box_1_active:
             text_box_1_color = AMBER
@@ -232,6 +240,7 @@ def two_players_name_menu():
         WIN.blit(player2_name_text,
                  (NAME_TEXT_BOX_2.x + 5, NAME_TEXT_BOX_2.y + 10))
         WIN.blit(ENTER_PLAYER_NAMES_TEXT, ENTER_PLAYER_NAMES_RECT)
+        WIN.blit(PRESS_ENTER_TEXT, PRESS_ENTER_RECT)
         WIN.blit(PLAYER1_TEXT, PLAYER1_RECT)
         WIN.blit(PLAYER2_TEXT, PLAYER2_RECT)
 
@@ -282,7 +291,7 @@ def two_players_name_menu():
 
 
 def play():  # main game loop
-    pygame.display.set_caption("Play")
+    pygame.display.set_caption("Game")
     clock = pygame.time.Clock()
     game = Game(WIN)
 
@@ -291,10 +300,10 @@ def play():  # main game loop
         play_mouse_pos = pygame.mouse.get_pos()
         PLAYER1_NAME_TEXT = SMALL_FONT.render(PLAYER1_NAME, True, BLACK)
         PLAYER2_NAME_TEXT = SMALL_FONT.render(PLAYER2_NAME, True, BLACK)
-        PLAYER1_NAME_RECT = PLAYER1_NAME_TEXT.get_rect(center=(35,
-                                                               20 + 40 * 2))
-        PLAYER2_NAME_RECT = PLAYER2_NAME_TEXT.get_rect(center=(35,
-                                                               20 + 40 * 18))
+        PLAYER1_NAME_RECT = PLAYER1_NAME_TEXT.get_rect(
+            center=(35, SQUARE_SIZE // 2 + SQUARE_SIZE * (ROWS - 3)))
+        PLAYER2_NAME_RECT = PLAYER2_NAME_TEXT.get_rect(
+            center=((35, SQUARE_SIZE // 2 + SQUARE_SIZE * 2)))
 
         for event in pygame.event.get():  # check if event happened
             if event.type == pygame.QUIT:
@@ -302,7 +311,9 @@ def play():  # main game loop
                 sys.exit()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
-                pass
+                row, col = get_row_col_from_mouse(play_mouse_pos)
+                piece = game.board.getPiece(row, col)
+                game.board.fromHandToBoard(piece, 15, 7)
 
         game.updateBoard()
         WIN.blit(PLAYER1_NAME_TEXT, PLAYER1_NAME_RECT)

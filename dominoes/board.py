@@ -8,12 +8,8 @@ from .half_domino import HalfDomino
 
 class Board:
 
-    def __init__(self, nb_players, nb_dominoes_per_player):
-        assert nb_players == 2 or nb_players == 3 \
-            or nb_players == 4
-        assert nb_players * nb_dominoes_per_player <= 28
+    def __init__(self, nb_dominoes_per_player=7):
         self.board = []  # internal representation of the board: 2D list
-        self.nb_players = nb_players
         self.nb_dominoes_per_player = nb_dominoes_per_player
         self.domino_values = []  # list of tuples ex: (5, 3),
         # representing domino values. It is the stock of the game
@@ -75,8 +71,8 @@ class Board:
             self.board.append([])
         self.board[row + 1].append(half_domino_2)
         self.domino_values.remove(domino_value)
-        half_domino_1.drawFromStock()
-        half_domino_2.drawFromStock()
+        # half_domino_1.drawFromStock()
+        # half_domino_2.drawFromStock()
         return domino_value
 
     def createBoard(self):
@@ -111,6 +107,14 @@ class Board:
                 half_domino = self.board[row][col]
                 if half_domino != 'x':
                     if 0 <= row <= 1:
-                        half_domino.drawOpponent(win)
+                        half_domino.drawHidden(win)
                     else:
-                        half_domino.drawCurrentPlayer(win)
+                        half_domino.draw(win)
+
+    def fromHandToBoard(self, piece, row, col):
+        self.board[piece.row][piece.col], self.board[row][col] = self.board[
+            row][col], self.board[piece.row][piece.col]
+        piece.fromHandToBoard(row, col)
+
+    def getPiece(self, row, col):
+        return self.board[row][col]

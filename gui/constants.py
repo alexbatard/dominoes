@@ -1,7 +1,6 @@
 import pygame
 from dominoes.constants import WIDTH, HEIGHT, AMBER
 
-
 pygame.init()
 
 # fonts
@@ -15,6 +14,7 @@ SELECT_MODE_TEXT = BIG_FONT.render("Select Mode", True, AMBER)
 SELECT_COMPUTER_DIFFICULTY_TEXT = MEDIUM_FONT.render(
     "Select computer difficulty", True, AMBER)
 ENTER_PLAYER_NAMES_TEXT = BIG_FONT.render("Enter player names", True, AMBER)
+PRESS_ENTER_TEXT = MEDIUM_FONT.render("Press Enter to play!", True, AMBER)
 PLAYER1_TEXT = MEDIUM_FONT.render("Player 1", True, AMBER)
 PLAYER2_TEXT = MEDIUM_FONT.render("Player 2", True, AMBER)
 
@@ -30,6 +30,8 @@ SELECT_COMPUTER_DIFFICULTY_RECT = SELECT_COMPUTER_DIFFICULTY_TEXT.get_rect(
 ENTER_PLAYER_NAMES_RECT = ENTER_PLAYER_NAMES_TEXT.get_rect(center=(WIDTH / 2,
                                                                    HEIGHT /
                                                                    12))
+PRESS_ENTER_RECT = PRESS_ENTER_TEXT.get_rect(center=(WIDTH / 2,
+                                                     2 * HEIGHT / 3))
 PLAYER1_RECT = PLAYER1_TEXT.get_rect(center=(WIDTH / 4, HEIGHT / 3))
 PLAYER2_RECT = PLAYER2_TEXT.get_rect(center=(3 * WIDTH / 4, HEIGHT / 3))
 NAME_TEXT_BOX_1 = pygame.Rect(WIDTH / 4 - 150 / 2, 3 * HEIGHT / 7 - 50 / 2,

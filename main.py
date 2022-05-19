@@ -301,9 +301,9 @@ def play():  # main game loop
         PLAYER1_NAME_TEXT = SMALL_FONT.render(PLAYER1_NAME, True, BLACK)
         PLAYER2_NAME_TEXT = SMALL_FONT.render(PLAYER2_NAME, True, BLACK)
         PLAYER1_NAME_RECT = PLAYER1_NAME_TEXT.get_rect(
-            center=(35, SQUARE_SIZE // 2 + SQUARE_SIZE * (ROWS - 3)))
+            center=(WIDTH / 2, SQUARE_SIZE // 2 + SQUARE_SIZE * (ROWS - 3)))
         PLAYER2_NAME_RECT = PLAYER2_NAME_TEXT.get_rect(
-            center=((35, SQUARE_SIZE // 2 + SQUARE_SIZE * 2)))
+            center=((WIDTH / 2, SQUARE_SIZE // 2 + SQUARE_SIZE * 2)))
 
         for event in pygame.event.get():  # check if event happened
             if event.type == pygame.QUIT:

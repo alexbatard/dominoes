@@ -19,3 +19,7 @@ PURPLE = (170, 0, 255)
 # domino back image
 DOMINO_BACK = pygame.transform.scale(
     pygame.image.load("assets/dom_back.png"), (40, 40))
+
+# players
+PLAYER1 = 'player1'
+PLAYER2 = 'player2'

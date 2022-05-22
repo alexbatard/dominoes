@@ -2,15 +2,15 @@ from random import randint
 import pygame
 # relative imports
 from .constants import LIGHT_CYAN, PALE_TURQUOISE, TEAL, ROWS, COLS,\
-    SQUARE_SIZE
+    SQUARE_SIZE, PLAYER1, PLAYER2
 from .half_domino import HalfDomino
 
 
 class Board:
 
-    def __init__(self, nb_dominoes_per_player=7):
+    def __init__(self, dominoes_per_player=7):
         self.board = []  # internal representation of the board: 2D list
-        self.nb_dominoes_per_player = nb_dominoes_per_player
+        self.dominoes_per_player = dominoes_per_player
         self.domino_values = []  # list of tuples ex: (5, 3),
         # representing domino values. It is the stock of the game
 
@@ -53,7 +53,7 @@ class Board:
                     if (j, i) not in self.domino_values:  # no doubles
                         self.domino_values.append((i, j))
 
-    def fromStockToHand(self, row, col):
+    def fromStockToHand(self, row, col, player):
         # select a random domino value from stock
         # create the 2 corresponding half dominoes
         # add them to the internal representation of the board,
@@ -64,15 +64,16 @@ class Board:
         domino_value = self.domino_values[randint(0,
                                                   len(self.domino_values) -
                                                   1)]  # random domino value
-        half_domino_1 = HalfDomino(row, col, domino_value[0])  # create domino
-        half_domino_2 = HalfDomino(row + 1, col, domino_value[1])
-        self.board[row].append(half_domino_1)
+        piece_1 = HalfDomino(row, col, domino_value[0],
+                             player)  # create domino
+        piece_2 = HalfDomino(row + 1, col, domino_value[1], player)
+        self.board[row].append(piece_1)
         if col == 0:
             self.board.append([])
-        self.board[row + 1].append(half_domino_2)
+        self.board[row + 1].append(piece_2)
         self.domino_values.remove(domino_value)
-        # half_domino_1.drawFromStock()
-        # half_domino_2.drawFromStock()
+        # piece_1.drawFromStock()
+        # piece_2.drawFromStock()
         return domino_value
 
     def createBoard(self):
@@ -86,29 +87,37 @@ class Board:
             if row != 1 and row != ROWS - 1:
                 self.board.append([])  # 1 list per row
             for col in range(COLS):
-                if col < self.nb_dominoes_per_player:
+                if col < self.dominoes_per_player:
                     if row == 0:
-                        domino_value = self.fromStockToHand(row, col)
+                        domino_value = self.fromStockToHand(row, col, PLAYER2)
                         self.player2_dominoes.append(domino_value)
                     elif row == ROWS - 2:
-                        domino_value = self.fromStockToHand(row, col)
+                        domino_value = self.fromStockToHand(row, col, PLAYER1)
                         self.player1_dominoes.append(domino_value)
                     elif row != 1 and row != ROWS - 1:
                         self.board[row].append('x')
                 else:
                     self.board[row].append('x')
 
-    def draw(self, win):
+    def draw(self, win, player):
         # draw the background and the dominoes in the window (GUI)
         self.drawBackground(win)
         for row in range(ROWS):
             for col in range(COLS):
-                half_domino = self.board[row][col]
-                if half_domino != 'x':
-                    if 0 <= row <= 1:
-                        half_domino.drawHidden(win)
+                piece = self.board[row][col]
+                if piece != 'x':
+                    if player == PLAYER1:
+                        if piece.player == PLAYER1 or \
+                         piece.is_on_board:
+                            piece.draw(win)
+                        else:
+                            piece.drawHidden(win)
                     else:
-                        half_domino.draw(win)
+                        if piece.player == PLAYER2 or \
+                         piece.is_on_board:
+                            piece.draw(win)
+                        else:
+                            piece.drawHidden(win)
 
     def fromHandToBoard(self, piece, row, col):
         self.board[piece.row][piece.col], self.board[row][col] = self.board[
@@ -117,3 +126,6 @@ class Board:
 
     def getPiece(self, row, col):
         return self.board[row][col]
+
+    def winner(self):
+        pass

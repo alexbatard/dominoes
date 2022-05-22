@@ -312,13 +312,13 @@ def play():  # main game loop
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 row, col = get_row_col_from_mouse(play_mouse_pos)
-                piece = game.board.getPiece(row, col)
-                game.board.fromHandToBoard(piece, 15, 7)
+                game.select(row, col)
+                # piece = game.board.getPiece(row, col)
+                # game.board.fromHandToBoard(piece, 15, 7)
 
-        game.updateBoard()
         WIN.blit(PLAYER1_NAME_TEXT, PLAYER1_NAME_RECT)
         WIN.blit(PLAYER2_NAME_TEXT, PLAYER2_NAME_RECT)
-        pygame.display.update()
+        game.update()
 
 
 if __name__ == "__main__":

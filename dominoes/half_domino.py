@@ -4,11 +4,12 @@ from .constants import SQUARE_SIZE, DOMINO_BACK
 
 class HalfDomino:
 
-    def __init__(self, row, col, value):
+    def __init__(self, row, col, value, player):
         self.row = row
         self.col = col
         self.value = value
-        # self.is_on_board = False
+        self.player = player
+        self.is_on_board = False
         # self.is_in_stock = True
         # self.orientation = 'top'  # initial half domino orientation
         # if something is done by the player, self.orientation = either left,
@@ -23,17 +24,13 @@ class HalfDomino:
         self.x = SQUARE_SIZE * self.col + SQUARE_SIZE // 2
         self.y = SQUARE_SIZE * self.row + SQUARE_SIZE // 2
 
-    # def placeOnBoard(self):
-    #     # change state of the half domino
-    #     self.is_on_board = True
+    def placeOnBoard(self):
+        # change state of the half domino
+        self.is_on_board = True
 
     # def drawFromStock(self):
     #     # change state of the half domino
     #     self.is_in_stock = False
-
-    def changeOrientation(self):
-        # change state of the half domino
-        pass
 
     def draw(self, win):
         DOMINO_IMAGE = pygame.transform.scale(
@@ -50,6 +47,7 @@ class HalfDomino:
         self.row = row
         self.col = col
         self.calcPos()
+        self.placeOnBoard()
 
     def __repr__(self):
         return str(self.value)

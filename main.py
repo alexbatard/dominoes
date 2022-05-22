@@ -304,6 +304,8 @@ def play():  # main game loop
             center=(WIDTH / 2, SQUARE_SIZE // 2 + SQUARE_SIZE * (ROWS - 3)))
         PLAYER2_NAME_RECT = PLAYER2_NAME_TEXT.get_rect(
             center=((WIDTH / 2, SQUARE_SIZE // 2 + SQUARE_SIZE * 2)))
+        WIN.blit(PLAYER1_NAME_TEXT, PLAYER1_NAME_RECT)
+        WIN.blit(PLAYER2_NAME_TEXT, PLAYER2_NAME_RECT)
 
         for event in pygame.event.get():  # check if event happened
             if event.type == pygame.QUIT:
@@ -313,11 +315,7 @@ def play():  # main game loop
             if event.type == pygame.MOUSEBUTTONDOWN:
                 row, col = get_row_col_from_mouse(play_mouse_pos)
                 game.select(row, col)
-                # piece = game.board.getPiece(row, col)
-                # game.board.fromHandToBoard(piece, 15, 7)
 
-        WIN.blit(PLAYER1_NAME_TEXT, PLAYER1_NAME_RECT)
-        WIN.blit(PLAYER2_NAME_TEXT, PLAYER2_NAME_RECT)
         game.update()
 
 

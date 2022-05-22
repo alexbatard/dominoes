@@ -45,7 +45,12 @@ class Game:
             # and (row, col) in self.valid_moves:
             self.board.fromHandToBoard(self.selected, row, col)
             Game.cnt += 1
-            if Game.cnt == 2:
+            if Game.cnt == 1:
+                global value_1
+                value_1 = self.selected.value
+            elif Game.cnt == 2:
+                global value_2
+                value_2 = self.selected.value
                 Game.cnt = 0
                 self.changeTurn()
         else:
@@ -55,8 +60,10 @@ class Game:
 
     def changeTurn(self):
         if self.turn == PLAYER1:
+            self.board.player1_dominoes.remove((value_1, value_2))
             self.turn = PLAYER2
         else:
+            self.board.player2_dominoes.remove((value_1, value_2))
             self.turn = PLAYER1
 
     def winner(self):

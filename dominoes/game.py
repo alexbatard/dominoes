@@ -22,7 +22,6 @@ class Game:
     def update(self):
         # update the board
         self.board.draw(self.win, self.turn)
-        pygame.display.update()
 
     def select(self, row, col):
         if self.selected:
@@ -60,10 +59,16 @@ class Game:
 
     def changeTurn(self):
         if self.turn == PLAYER1:
-            self.board.player1_dominoes.remove((value_1, value_2))
+            if (value_1, value_2) in self.board.player1_dominoes:
+                self.board.player1_dominoes.remove((value_1, value_2))
+            else:
+                self.board.player1_dominoes.remove((value_2, value_1))
             self.turn = PLAYER2
         else:
-            self.board.player2_dominoes.remove((value_1, value_2))
+            if (value_1, value_2) in self.board.player2_dominoes:
+                self.board.player2_dominoes.remove((value_1, value_2))
+            else:
+                self.board.player2_dominoes.remove((value_2, value_1))
             self.turn = PLAYER1
 
     def winner(self):

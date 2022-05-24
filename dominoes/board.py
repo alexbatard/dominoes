@@ -2,7 +2,7 @@ from random import randint
 import pygame
 # relative imports
 from .constants import LIGHT_CYAN, PALE_TURQUOISE, TEAL, ROWS, COLS,\
-    SQUARE_SIZE, PLAYER1, PLAYER2
+    SQUARE_SIZE, PLAYER1, PLAYER2, DEEP_PURPLE, MAGENTA, PURPLE
 from .half_domino import HalfDomino
 
 
@@ -31,15 +31,15 @@ class Board:
 
     def drawBackground(self, win):
         # draw the background of the board in the window (GUI)
-        win.fill(LIGHT_CYAN)
+        win.fill(MAGENTA)
         for row in range(ROWS):
             for col in range(row % 2, COLS, 2):
-                pygame.draw.rect(win, PALE_TURQUOISE,
+                pygame.draw.rect(win, DEEP_PURPLE,
                                  (col * SQUARE_SIZE, row * SQUARE_SIZE,
                                   SQUARE_SIZE, SQUARE_SIZE))
             if 0 <= row <= 2 or ROWS - 3 <= row <= ROWS - 1:
                 for col in range(COLS):
-                    pygame.draw.rect(win, TEAL,
+                    pygame.draw.rect(win, PURPLE,
                                      (col * SQUARE_SIZE, row * SQUARE_SIZE,
                                       SQUARE_SIZE, SQUARE_SIZE))
 

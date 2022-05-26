@@ -1,5 +1,5 @@
 from dominoes.board import Board
-from .constants import PLAYER1, PLAYER2
+from .constants import PLAYER1, PLAYER2, ROWS
 
 
 class Game:
@@ -82,6 +82,24 @@ class Game:
                 self.board.player2_dominoes.remove((value_1, value_2))
             else:
                 self.board.player2_dominoes.remove((value_2, value_1))
+
+    def draw(self):
+        if self.turn == PLAYER1:
+            row = ROWS - 2
+            for piece in self.board.board[row]:
+                if piece == 'x':
+                    col = self.board.board[row].index(piece)
+                    break
+            domino_value = self.board.drawPiece(row, col, PLAYER1)
+            self.board.player1_dominoes.append(domino_value)
+        else:
+            row = 0
+            for piece in self.board.board[row]:
+                if piece == 'x':
+                    col = self.board.board[row].index(piece)
+                    break
+            domino_value = self.board.drawPiece(row, col, PLAYER2)
+            self.board.player2_dominoes.append(domino_value)
 
     def winner(self):
         return self.board.winner()

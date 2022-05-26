@@ -342,7 +342,7 @@ def play():  # main game loop
                     game.changeTurn()
 
                 elif DRAW_BUTTON.checkForInput(play_mouse_pos):
-                    pass
+                    game.draw()
 
                 else:
                     row, col = get_row_col_from_mouse(play_mouse_pos)

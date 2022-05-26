@@ -31,15 +31,15 @@ class Board:
 
     def drawBackground(self, win):
         # draw the background of the board in the window (GUI)
-        win.fill(MAGENTA)
+        win.fill(LIGHT_CYAN)
         for row in range(ROWS):
             for col in range(row % 2, COLS, 2):
-                pygame.draw.rect(win, DEEP_PURPLE,
+                pygame.draw.rect(win, PALE_TURQUOISE,
                                  (col * SQUARE_SIZE, row * SQUARE_SIZE,
                                   SQUARE_SIZE, SQUARE_SIZE))
             if 0 <= row <= 2 or ROWS - 3 <= row <= ROWS - 1:
                 for col in range(COLS):
-                    pygame.draw.rect(win, PURPLE,
+                    pygame.draw.rect(win, TEAL,
                                      (col * SQUARE_SIZE, row * SQUARE_SIZE,
                                       SQUARE_SIZE, SQUARE_SIZE))
 
@@ -72,8 +72,19 @@ class Board:
             self.board.append([])
         self.board[row + 1].append(piece_2)
         self.domino_values.remove(domino_value)
-        # piece_1.drawFromStock()
-        # piece_2.drawFromStock()
+        return domino_value
+
+    def drawPiece(self, row, col, player):
+        # draw a piece from the stock if a player can't play
+        domino_value = self.domino_values[randint(0,
+                                                  len(self.domino_values) -
+                                                  1)]  # random domino value
+        piece_1 = HalfDomino(row, col, domino_value[0],
+                             player)  # create domino
+        piece_2 = HalfDomino(row + 1, col, domino_value[1], player)
+        self.board[row][col] = piece_1
+        self.board[row + 1][col] = piece_2
+        self.domino_values.remove(domino_value)
         return domino_value
 
     def createBoard(self):

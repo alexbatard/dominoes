@@ -314,14 +314,7 @@ def play():  # main game loop
                              hovering_color=WHITE,
                              text_input="Draw")
 
-        END_TURN_BUTTON = Button(pos=(13 * WIDTH / 15, 19.5 * HEIGHT / 21),
-                                 font=SMALL_FONT,
-                                 image=BUTTON,
-                                 base_color=BLACK,
-                                 hovering_color=WHITE,
-                                 text_input="End turn")
-
-        NEXT_TURN_BUTTON = Button(pos=(13 * WIDTH / 15, 20.5 * HEIGHT / 21),
+        NEXT_TURN_BUTTON = Button(pos=(13 * WIDTH / 15, 20 * HEIGHT / 21),
                                   font=SMALL_FONT,
                                   image=BUTTON,
                                   base_color=BLACK,
@@ -334,15 +327,14 @@ def play():  # main game loop
                 sys.exit()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if END_TURN_BUTTON.checkForInput(play_mouse_pos):
-                    game.resetTurn()
-
-                elif NEXT_TURN_BUTTON.checkForInput(play_mouse_pos):
+                if NEXT_TURN_BUTTON.checkForInput(
+                        play_mouse_pos):  # and not is_end_turn_button_active:
                     game.restoreTurn()
                     game.changeTurn()
 
                 elif DRAW_BUTTON.checkForInput(play_mouse_pos):
                     game.draw()
+                    game.resetTurn()
 
                 else:
                     row, col = get_row_col_from_mouse(play_mouse_pos)
@@ -354,10 +346,7 @@ def play():  # main game loop
         DRAW_BUTTON.changeTextColor(play_mouse_pos)
         DRAW_BUTTON.update(WIN)
 
-        if game.turn is not None:
-            END_TURN_BUTTON.changeTextColor(play_mouse_pos)
-            END_TURN_BUTTON.update(WIN)
-        else:
+        if game.turn is None:
             NEXT_TURN_BUTTON.changeTextColor(play_mouse_pos)
             NEXT_TURN_BUTTON.update(WIN)
 

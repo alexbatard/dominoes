@@ -53,6 +53,7 @@ class Game:
                 Game.cnt = 0
                 # self.changeTurn()
                 self.removeDominoFromHand(Game.value_1, Game.value_2)
+                self.resetTurn()
         else:
             return False
 

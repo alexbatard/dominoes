@@ -298,6 +298,8 @@ def play():  # main game loop
     while True:  # event loop
         clock.tick(FPS)  # set FPS
         play_mouse_pos = pygame.mouse.get_pos()
+        game.update()
+
         PLAYER1_NAME_TEXT = SMALL_FONT.render(PLAYER1_NAME, True, BLACK)
         PLAYER2_NAME_TEXT = SMALL_FONT.render(PLAYER2_NAME, True, BLACK)
         PLAYER1_NAME_RECT = PLAYER1_NAME_TEXT.get_rect(
@@ -305,19 +307,26 @@ def play():  # main game loop
         PLAYER2_NAME_RECT = PLAYER2_NAME_TEXT.get_rect(
             center=((WIDTH / 2, SQUARE_SIZE // 2 + SQUARE_SIZE * 2)))
 
-        END_TURN_BUTTON = Button(pos=(13 * WIDTH / 15, 18.5 * HEIGHT / 21),
+        DRAW_BUTTON = Button(pos=(13 * WIDTH / 15, 18.5 * HEIGHT / 21),
+                             font=SMALL_FONT,
+                             image=BUTTON,
+                             base_color=BLACK,
+                             hovering_color=WHITE,
+                             text_input="Draw")
+
+        END_TURN_BUTTON = Button(pos=(13 * WIDTH / 15, 19.5 * HEIGHT / 21),
                                  font=SMALL_FONT,
                                  image=BUTTON,
                                  base_color=BLACK,
                                  hovering_color=WHITE,
                                  text_input="End turn")
 
-        # NEXT_TURN_BUTTON = Button(pos=(WIDTH / 2, HEIGHT / 3),
-        #                           font=SMALL_FONT,
-        #                           image=BUTTON,
-        #                           base_color=BLACK,
-        #                           hovering_color=WHITE,
-        #                           text_input="Easy")
+        NEXT_TURN_BUTTON = Button(pos=(13 * WIDTH / 15, 20.5 * HEIGHT / 21),
+                                  font=SMALL_FONT,
+                                  image=BUTTON,
+                                  base_color=BLACK,
+                                  hovering_color=WHITE,
+                                  text_input="Next turn")
 
         for event in pygame.event.get():  # check if event happened
             if event.type == pygame.QUIT:
@@ -325,20 +334,35 @@ def play():  # main game loop
                 sys.exit()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
-                row, col = get_row_col_from_mouse(play_mouse_pos)
-                game.select(row, col)
+                if END_TURN_BUTTON.checkForInput(play_mouse_pos):
+                    game.resetTurn()
 
-        game.update()
+                elif NEXT_TURN_BUTTON.checkForInput(play_mouse_pos):
+                    game.restoreTurn()
+                    game.changeTurn()
+
+                elif DRAW_BUTTON.checkForInput(play_mouse_pos):
+                    pass
+
+                else:
+                    row, col = get_row_col_from_mouse(play_mouse_pos)
+                    game.select(row, col)
 
         WIN.blit(PLAYER1_NAME_TEXT, PLAYER1_NAME_RECT)
         WIN.blit(PLAYER2_NAME_TEXT, PLAYER2_NAME_RECT)
 
-        for button in [END_TURN_BUTTON]:
-            # if ...
-            button.changeTextColor(play_mouse_pos)
-            button.update(WIN)
+        DRAW_BUTTON.changeTextColor(play_mouse_pos)
+        DRAW_BUTTON.update(WIN)
+
+        if game.turn is not None:
+            END_TURN_BUTTON.changeTextColor(play_mouse_pos)
+            END_TURN_BUTTON.update(WIN)
+        else:
+            NEXT_TURN_BUTTON.changeTextColor(play_mouse_pos)
+            NEXT_TURN_BUTTON.update(WIN)
 
         pygame.display.update()
+
 
 if __name__ == "__main__":
     main_menu()

@@ -112,9 +112,14 @@ class Board:
                             piece.draw(win)
                         else:
                             piece.drawHidden(win)
-                    else:
+                    elif player == PLAYER2:
                         if piece.player == PLAYER2 or \
                          piece.is_on_board:
+                            piece.draw(win)
+                        else:
+                            piece.drawHidden(win)
+                    else:
+                        if piece.is_on_board:
                             piece.draw(win)
                         else:
                             piece.drawHidden(win)

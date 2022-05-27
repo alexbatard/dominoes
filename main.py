@@ -14,7 +14,6 @@ from gui.button import Button
 pygame.init()
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))  # set window dimensions
 pygame.display.set_caption("Main menu")  # set window caption
-
 FPS = 60  # frames per second
 
 
@@ -290,10 +289,15 @@ def two_players_name_menu():
         pygame.display.update()
 
 
+def winner_menu():
+    pass
+
+
 def play():  # main game loop
     pygame.display.set_caption("Game")
     clock = pygame.time.Clock()
     game = Game(WIN)
+    is_next_turn_button_active = False
 
     while True:  # event loop
         clock.tick(FPS)  # set FPS
@@ -314,12 +318,15 @@ def play():  # main game loop
                              hovering_color=WHITE,
                              text_input="Draw")
 
-        NEXT_TURN_BUTTON = Button(pos=(13 * WIDTH / 15, 20 * HEIGHT / 21),
+        NEXT_TURN_BUTTON = Button(pos=(13 * WIDTH / 15, 18.5 * HEIGHT / 21),
                                   font=SMALL_FONT,
                                   image=BUTTON,
                                   base_color=BLACK,
                                   hovering_color=WHITE,
                                   text_input="Next turn")
+
+        if game.winner() is not None:
+            winner_menu()
 
         for event in pygame.event.get():  # check if event happened
             if event.type == pygame.QUIT:
@@ -328,11 +335,13 @@ def play():  # main game loop
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if NEXT_TURN_BUTTON.checkForInput(
-                        play_mouse_pos):  # and not is_end_turn_button_active:
+                        play_mouse_pos) and is_next_turn_button_active:
                     game.restoreTurn()
                     game.changeTurn()
 
-                elif DRAW_BUTTON.checkForInput(play_mouse_pos):
+                elif (DRAW_BUTTON.checkForInput(play_mouse_pos)
+                      and not is_next_turn_button_active
+                      and game.dominoes_in_stock > 0):
                     game.draw()
                     game.resetTurn()
 
@@ -343,12 +352,15 @@ def play():  # main game loop
         WIN.blit(PLAYER1_NAME_TEXT, PLAYER1_NAME_RECT)
         WIN.blit(PLAYER2_NAME_TEXT, PLAYER2_NAME_RECT)
 
-        DRAW_BUTTON.changeTextColor(play_mouse_pos)
-        DRAW_BUTTON.update(WIN)
-
         if game.turn is None:
+            is_next_turn_button_active = True
             NEXT_TURN_BUTTON.changeTextColor(play_mouse_pos)
             NEXT_TURN_BUTTON.update(WIN)
+
+        elif game.dominoes_in_stock > 0:
+            is_next_turn_button_active = False
+            DRAW_BUTTON.changeTextColor(play_mouse_pos)
+            DRAW_BUTTON.update(WIN)
 
         pygame.display.update()
 

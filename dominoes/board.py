@@ -9,6 +9,7 @@ from .half_domino import HalfDomino
 class Board:
 
     def __init__(self, dominoes_per_player=7):
+        assert dominoes_per_player <= 14
         self.board = []  # internal representation of the board: 2D list
         self.dominoes_per_player = dominoes_per_player
         self.domino_values = []  # list of tuples ex: (5, 3),
@@ -142,6 +143,3 @@ class Board:
 
     def getPiece(self, row, col):
         return self.board[row][col]
-
-    def winner(self):
-        pass

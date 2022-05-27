@@ -7,6 +7,7 @@ class Game:
     previous_turn = None
     value_1 = 0
     value_2 = 0
+    dominoes_in_stock = 1
 
     def __init__(self, win):
         self._init()
@@ -85,22 +86,31 @@ class Game:
                 self.board.player2_dominoes.remove((value_2, value_1))
 
     def draw(self):
-        if self.turn == PLAYER1:
-            row = ROWS - 2
-            for piece in self.board.board[row]:
-                if piece == 'x':
-                    col = self.board.board[row].index(piece)
-                    break
-            domino_value = self.board.drawPiece(row, col, PLAYER1)
-            self.board.player1_dominoes.append(domino_value)
+        dominoes_in_stock = len(self.board.domino_values)
+        if dominoes_in_stock == 0:
+            pass
         else:
-            row = 0
-            for piece in self.board.board[row]:
-                if piece == 'x':
-                    col = self.board.board[row].index(piece)
-                    break
-            domino_value = self.board.drawPiece(row, col, PLAYER2)
-            self.board.player2_dominoes.append(domino_value)
+            if self.turn == PLAYER1:
+                row = ROWS - 2
+                for piece in self.board.board[row]:
+                    if piece == 'x':
+                        col = self.board.board[row].index(piece)
+                        break
+                domino_value = self.board.drawPiece(row, col, PLAYER1)
+                self.board.player1_dominoes.append(domino_value)
+            else:
+                row = 0
+                for piece in self.board.board[row]:
+                    if piece == 'x':
+                        col = self.board.board[row].index(piece)
+                        break
+                domino_value = self.board.drawPiece(row, col, PLAYER2)
+                self.board.player2_dominoes.append(domino_value)
 
     def winner(self):
-        return self.board.winner()
+        if len(self.board.player1_dominoes) == 0:
+            return PLAYER1
+        elif len(self.board.player2_dominoes) == 0:
+            return PLAYER2
+
+        return None

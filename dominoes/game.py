@@ -4,10 +4,8 @@ from .constants import PLAYER1, PLAYER2, ROWS
 
 class Game:
     cnt = 0
-    previous_turn = None
     value_1 = 0
     value_2 = 0
-    dominoes_in_stock = 1
 
     def __init__(self, win):
         self._init()
@@ -17,7 +15,9 @@ class Game:
         self.selected = None
         self.board = Board()
         self.turn = PLAYER1
+        self.previous_turn = None
         self.valid_moves = {}
+        self.dominoes_in_stock = len(self.board.domino_values)
 
     def reset(self):
         self._init()
@@ -67,11 +67,11 @@ class Game:
             self.turn = PLAYER1
 
     def resetTurn(self):
-        Game.previous_turn = self.turn
+        self.previous_turn = self.turn
         self.turn = None
 
     def restoreTurn(self):
-        self.turn = Game.previous_turn
+        self.turn = self.previous_turn
 
     def removeDominoFromHand(self, value_1, value_2):
         if self.turn == PLAYER1:
@@ -86,26 +86,23 @@ class Game:
                 self.board.player2_dominoes.remove((value_2, value_1))
 
     def draw(self):
-        dominoes_in_stock = len(self.board.domino_values)
-        if dominoes_in_stock == 0:
-            pass
+        self.dominoes_in_stock -= 1
+        if self.turn == PLAYER1:
+            row = ROWS - 2
+            for piece in self.board.board[row]:
+                if piece == 'x':
+                    col = self.board.board[row].index(piece)
+                    break
+            domino_value = self.board.drawPiece(row, col, PLAYER1)
+            self.board.player1_dominoes.append(domino_value)
         else:
-            if self.turn == PLAYER1:
-                row = ROWS - 2
-                for piece in self.board.board[row]:
-                    if piece == 'x':
-                        col = self.board.board[row].index(piece)
-                        break
-                domino_value = self.board.drawPiece(row, col, PLAYER1)
-                self.board.player1_dominoes.append(domino_value)
-            else:
-                row = 0
-                for piece in self.board.board[row]:
-                    if piece == 'x':
-                        col = self.board.board[row].index(piece)
-                        break
-                domino_value = self.board.drawPiece(row, col, PLAYER2)
-                self.board.player2_dominoes.append(domino_value)
+            row = 0
+            for piece in self.board.board[row]:
+                if piece == 'x':
+                    col = self.board.board[row].index(piece)
+                    break
+            domino_value = self.board.drawPiece(row, col, PLAYER2)
+            self.board.player2_dominoes.append(domino_value)
 
     def winner(self):
         if len(self.board.player1_dominoes) == 0:

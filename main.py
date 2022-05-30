@@ -8,7 +8,9 @@ from gui.constants import SMALL_FONT, BIG_FONT, DOMINOES_TEXT, \
      BACKGROUND, NAME_TEXT_BOX_1, NAME_TEXT_BOX_2, ENTER_PLAYER_NAMES_TEXT,\
      ENTER_PLAYER_NAMES_RECT, PLAYER1_TEXT, PLAYER1_RECT, PLAYER2_TEXT,\
      PLAYER2_RECT, PRESS_ENTER_TEXT, PRESS_ENTER_RECT, END_GAME_TEXT, \
-     END_GAME_RECT, STOCK_EMPTY_TEXT, STOCK_EMPTY_RECT, SMALLER_FONT
+     END_GAME_RECT, STOCK_EMPTY_TEXT, STOCK_EMPTY_RECT, SMALLER_FONT, \
+     ERROR_MESSAGE_TEXT_1, ERROR_MESSAGE_RECT_1, ERROR_MESSAGE_TEXT_2, \
+     ERROR_MESSAGE_RECT_2
 from dominoes.game import Game
 from gui.button import Button
 
@@ -129,6 +131,12 @@ def gamemode_menu():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if TWO_PLAYERS_BUTTON.checkForInput(gamemode_mouse_pos):
                     two_players_name_menu()
+
+                if THREE_PLAYERS_BUTTON.checkForInput(gamemode_mouse_pos):
+                    error_message()
+
+                if FOUR_PLAYERS_BUTTON.checkForInput(gamemode_mouse_pos):
+                    error_message()
 
                 if COMPUTER_BUTTON.checkForInput(gamemode_mouse_pos):
                     computer_difficulty_menu()
@@ -290,6 +298,39 @@ def two_players_name_menu():
         pygame.display.update()
 
 
+def error_message():
+    pygame.display.set_caption("Sorry :(")
+    while True:
+        WIN.blit(BACKGROUND, (0, 0))
+
+        error_mouse_pos = pygame.mouse.get_pos()
+
+        BACK_BUTTON = Button(pos=(WIDTH / 2, 11 * HEIGHT / 12),
+                             font=SMALL_FONT,
+                             image=BUTTON,
+                             base_color=BLACK,
+                             hovering_color=WHITE,
+                             text_input="Back")
+
+        WIN.blit(ERROR_MESSAGE_TEXT_1, ERROR_MESSAGE_RECT_1)
+        WIN.blit(ERROR_MESSAGE_TEXT_2, ERROR_MESSAGE_RECT_2)
+
+        BACK_BUTTON.changeTextColor(error_mouse_pos)
+        BACK_BUTTON.update(WIN)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+
+                if BACK_BUTTON.checkForInput(error_mouse_pos):
+                    gamemode_menu()
+
+        pygame.display.update()
+
+
 def end_game_menu():
     pygame.display.set_caption("End of the game")
 
@@ -355,13 +396,13 @@ def play():  # main game loop
         PLAYER2_NAME_RECT = PLAYER2_NAME_TEXT.get_rect(
             center=((WIDTH / 2, SQUARE_SIZE // 2 + SQUARE_SIZE * 2)))
 
-        DRAW_BUTTON = Button(
+        PICK_BUTTON = Button(
             pos=(13 * WIDTH / 15, 18.5 * HEIGHT / 21),
             font=SMALLER_FONT,
             image=BUTTON,
             base_color=BLACK,
             hovering_color=WHITE,
-            text_input=f"Draw ({game.dominoes_in_stock} left)")
+            text_input=f"Pick ({game.dominoes_in_stock} left)")
 
         NEXT_TURN_BUTTON = Button(pos=(13 * WIDTH / 15, 18.5 * HEIGHT / 21),
                                   font=SMALL_FONT,
@@ -392,10 +433,10 @@ def play():  # main game loop
                     game.restoreTurn()
                     game.changeTurn()
 
-                elif (DRAW_BUTTON.checkForInput(play_mouse_pos)
+                elif (PICK_BUTTON.checkForInput(play_mouse_pos)
                       and not is_next_turn_button_active
                       and game.dominoes_in_stock > 0):
-                    game.draw()
+                    game.pick()
                     game.resetTurn()
 
                 else:
@@ -413,8 +454,8 @@ def play():  # main game loop
         else:
             is_next_turn_button_active = False
             if game.dominoes_in_stock > 0:
-                DRAW_BUTTON.changeTextColor(play_mouse_pos)
-                DRAW_BUTTON.update(WIN)
+                PICK_BUTTON.changeTextColor(play_mouse_pos)
+                PICK_BUTTON.update(WIN)
             else:
                 WIN.blit(STOCK_EMPTY_TEXT, STOCK_EMPTY_RECT)
 

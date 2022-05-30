@@ -20,6 +20,8 @@ PLAYER1_TEXT = MEDIUM_FONT.render("Player 1", True, AMBER)
 PLAYER2_TEXT = MEDIUM_FONT.render("Player 2", True, AMBER)
 END_GAME_TEXT = BIG_FONT.render("End of the game", True, AMBER)
 STOCK_EMPTY_TEXT = SMALL_FONT.render("Stock empty!", True, BLACK)
+ERROR_MESSAGE_TEXT_1 = MEDIUM_FONT.render("Sorry, this feature", True, AMBER)
+ERROR_MESSAGE_TEXT_2 = MEDIUM_FONT.render("is not yet available!", True, AMBER)
 
 # rectangles
 # a new rectangle covering the entire surface
@@ -44,7 +46,10 @@ NAME_TEXT_BOX_2 = pygame.Rect(3 * WIDTH / 4 - 150 / 2, 3 * HEIGHT / 7 - 50 / 2,
 END_GAME_RECT = END_GAME_TEXT.get_rect(center=(WIDTH / 2, HEIGHT / 12))
 STOCK_EMPTY_RECT = STOCK_EMPTY_TEXT.get_rect(center=(13 * WIDTH / 15,
                                                      18.5 * HEIGHT / 21))
-
+ERROR_MESSAGE_RECT_1 = ERROR_MESSAGE_TEXT_1.get_rect(center=(WIDTH / 2,
+                                                             HEIGHT / 8))
+ERROR_MESSAGE_RECT_2 = ERROR_MESSAGE_TEXT_2.get_rect(center=(WIDTH / 2,
+                                                             HEIGHT / 4))
 # images
 BUTTON = pygame.transform.scale(pygame.image.load("assets/purple_button.png"),
                                 (180, 120))

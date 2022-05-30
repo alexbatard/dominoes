@@ -13,9 +13,6 @@ LIGHT_CYAN = (224, 255, 255)
 PALE_TURQUOISE = (175, 238, 238)
 TEAL = (0, 128, 128)
 AMBER = (255, 179, 0)
-DEEP_PURPLE = (49, 27, 146)
-MAGENTA = (234, 128, 252)
-PURPLE = (98, 0, 234)
 
 # domino back image
 DOMINO_BACK = pygame.transform.scale(

@@ -1,0 +1,2 @@
+class Ends(list):
+    pass

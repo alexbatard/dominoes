@@ -85,7 +85,7 @@ class Game:
             else:
                 self.board.player2_dominoes.remove((value_2, value_1))
 
-    def draw(self):
+    def pick(self):
         self.dominoes_in_stock -= 1
         if self.turn == PLAYER1:
             row = ROWS - 2
@@ -93,7 +93,7 @@ class Game:
                 if piece == 'x':
                     col = self.board.board[row].index(piece)
                     break
-            domino_value = self.board.drawPiece(row, col, PLAYER1)
+            domino_value = self.board.pickPiece(row, col, PLAYER1)
             self.board.player1_dominoes.append(domino_value)
         else:
             row = 0
@@ -101,7 +101,7 @@ class Game:
                 if piece == 'x':
                     col = self.board.board[row].index(piece)
                     break
-            domino_value = self.board.drawPiece(row, col, PLAYER2)
+            domino_value = self.board.pickPiece(row, col, PLAYER2)
             self.board.player2_dominoes.append(domino_value)
 
     def winner(self):

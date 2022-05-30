@@ -2,7 +2,7 @@ from random import randint
 import pygame
 # relative imports
 from .constants import LIGHT_CYAN, PALE_TURQUOISE, TEAL, ROWS, COLS,\
-    SQUARE_SIZE, PLAYER1, PLAYER2, DEEP_PURPLE, MAGENTA, PURPLE
+    SQUARE_SIZE, PLAYER1, PLAYER2
 from .half_domino import HalfDomino
 
 
@@ -12,7 +12,7 @@ class Board:
         assert dominoes_per_player <= 14
         self.board = []  # internal representation of the board: 2D list
         self.dominoes_per_player = dominoes_per_player
-        self.domino_values = []  # list of tuples ex: (5, 3),
+        self.domino_values = []  # list of tuples exP: (5, 3),
         # representing domino values. It is the stock of the game
 
         # store the dominoes per player, represented by tuples
@@ -23,7 +23,7 @@ class Board:
 
         # when the player puts a domino on the board,
         # remove the  domino from the list
-        # when he draws a domino from the stock, add it to the list
+        # when he picks a domino from the stock, add it to the list
         # the list gives access to the number of dominoes
         # left per player (using len())
 
@@ -75,8 +75,8 @@ class Board:
         self.domino_values.remove(domino_value)
         return domino_value
 
-    def drawPiece(self, row, col, player):
-        # draw a piece from the stock if a player can't play
+    def pickPiece(self, row, col, player):
+        # pick a piece from the stock if a player can't play
         domino_value = self.domino_values[randint(0,
                                                   len(self.domino_values) -
                                                   1)]  # random domino value

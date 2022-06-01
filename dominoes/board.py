@@ -6,13 +6,12 @@ from .constants import LIGHT_CYAN, PALE_TURQUOISE, TEAL, ROWS, COLS,\
 from .half_domino import HalfDomino
 
 
-class Board:
-
+class Board(list):
+    # internal representation of the board: 2D list
     def __init__(self, dominoes_per_player=7):
         assert dominoes_per_player <= 14
-        self.board = []  # internal representation of the board: 2D list
         self.dominoes_per_player = dominoes_per_player
-        self.domino_values = []  # list of tuples exP: (5, 3),
+        self.domino_values = []  # list of tuples ex: (5, 3),
         # representing domino values. It is the stock of the game
 
         # store the dominoes per player, represented by tuples
@@ -68,10 +67,10 @@ class Board:
         piece_1 = HalfDomino(row, col, domino_value[0],
                              player)  # create domino
         piece_2 = HalfDomino(row + 1, col, domino_value[1], player)
-        self.board[row].append(piece_1)
+        self[row].append(piece_1)
         if col == 0:
-            self.board.append([])
-        self.board[row + 1].append(piece_2)
+            self.append([])
+        self[row + 1].append(piece_2)
         self.domino_values.remove(domino_value)
         return domino_value
 
@@ -83,8 +82,8 @@ class Board:
         piece_1 = HalfDomino(row, col, domino_value[0],
                              player)  # create domino
         piece_2 = HalfDomino(row + 1, col, domino_value[1], player)
-        self.board[row][col] = piece_1
-        self.board[row + 1][col] = piece_2
+        self[row][col] = piece_1
+        self[row + 1][col] = piece_2
         self.domino_values.remove(domino_value)
         return domino_value
 
@@ -97,7 +96,7 @@ class Board:
             # rows 1 & 15 will be added when putting
             # the 1st domino on rows 0 & 14
             if row != 1 and row != ROWS - 1:
-                self.board.append([])  # 1 list per row
+                self.append([])  # 1 list per row
             for col in range(COLS):
                 if col < self.dominoes_per_player:
                     if row == 0:
@@ -107,16 +106,16 @@ class Board:
                         domino_value = self.fromStockToHand(row, col, PLAYER1)
                         self.player1_dominoes.append(domino_value)
                     elif row != 1 and row != ROWS - 1:
-                        self.board[row].append('x')
+                        self[row].append('x')
                 else:
-                    self.board[row].append('x')
+                    self[row].append('x')
 
     def draw(self, win, player):
         # draw the background and the dominoes in the window (GUI)
         self.drawBackground(win)
         for row in range(ROWS):
             for col in range(COLS):
-                piece = self.board[row][col]
+                piece = self[row][col]
                 if piece != 'x':
                     if player == PLAYER1:
                         if piece.player == PLAYER1 or \
@@ -137,9 +136,21 @@ class Board:
                             piece.drawHidden(win)
 
     def fromHandToBoard(self, piece, row, col):
-        self.board[piece.row][piece.col], self.board[row][col] = self.board[
-            row][col], self.board[piece.row][piece.col]
+        self[piece.row][piece.col], self[row][col] = self[row][col], self[
+            piece.row][piece.col]
         piece.fromHandToBoard(row, col)
 
     def getPiece(self, row, col):
-        return self.board[row][col]
+        return self[row][col]
+
+    def getNeighbors(self, piece):
+        neighbors = {'top': 0, 'bottom': 0, 'left': 0, 'right': 0}
+        if self.getPiece(piece.row - 1, piece.col) != 'x':
+            neighbors['top'] = 1
+        if self.getPiece(piece.row + 1, piece.col) != 'x':
+            neighbors['bottom'] = 1
+        if self.getPiece(piece.row, piece.col - 1) != 'x':
+            neighbors['left'] = 1
+        if self.getPiece(piece.row, piece.col + 1) != 'x':
+            neighbors['right'] = 1
+        piece.neighbors = neighbors

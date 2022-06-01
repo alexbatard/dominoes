@@ -12,8 +12,6 @@ BIG_FONT = pygame.font.Font("assets/SF Atarian System.ttf", 90)
 # text (type Surface)
 DOMINOES_TEXT = BIG_FONT.render("Dominoes!", True, AMBER)
 SELECT_MODE_TEXT = BIG_FONT.render("Select Mode", True, AMBER)
-SELECT_COMPUTER_DIFFICULTY_TEXT = MEDIUM_FONT.render(
-    "Select computer difficulty", True, AMBER)
 ENTER_PLAYER_NAMES_TEXT = BIG_FONT.render("Enter player names", True, AMBER)
 PRESS_ENTER_TEXT = MEDIUM_FONT.render("Press Enter to play!", True, AMBER)
 PLAYER1_TEXT = MEDIUM_FONT.render("Player 1", True, AMBER)
@@ -30,8 +28,6 @@ ERROR_MESSAGE_TEXT_2 = MEDIUM_FONT.render("is not yet available!", True, AMBER)
 # the rectangles are centered at the given positions
 DOMINOES_RECT = DOMINOES_TEXT.get_rect(center=(WIDTH / 2, HEIGHT / 4))
 SELECT_MODE_RECT = SELECT_MODE_TEXT.get_rect(center=(WIDTH / 2, HEIGHT / 12))
-SELECT_COMPUTER_DIFFICULTY_RECT = SELECT_COMPUTER_DIFFICULTY_TEXT.get_rect(
-    center=(WIDTH / 2, HEIGHT / 12))
 ENTER_PLAYER_NAMES_RECT = ENTER_PLAYER_NAMES_TEXT.get_rect(center=(WIDTH / 2,
                                                                    HEIGHT /
                                                                    12))

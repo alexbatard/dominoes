@@ -10,6 +10,7 @@ class HalfDomino:
         self.value = value
         self.player = player
         self.is_on_board = False
+        self.neighbors = {}
         self.x = 0
         self.y = 0
         self.calcPos()
@@ -38,6 +39,9 @@ class HalfDomino:
         self.col = col
         self.calcPos()
         self.placeOnBoard()
+
+    def getNeighborNumber(self):
+        return sum(self.neighbors.values())
 
     def __repr__(self):
         return str(self.value)

@@ -4,7 +4,6 @@ from dominoes.constants import WIDTH, HEIGHT, BLACK, WHITE, AMBER, ROWS,\
      SQUARE_SIZE, PLAYER1
 from gui.constants import SMALL_FONT, BIG_FONT, DOMINOES_TEXT, \
      DOMINOES_RECT, SELECT_MODE_TEXT, SELECT_MODE_RECT, BUTTON,\
-     SELECT_COMPUTER_DIFFICULTY_TEXT, SELECT_COMPUTER_DIFFICULTY_RECT,\
      BACKGROUND, NAME_TEXT_BOX_1, NAME_TEXT_BOX_2, ENTER_PLAYER_NAMES_TEXT,\
      ENTER_PLAYER_NAMES_RECT, PLAYER1_TEXT, PLAYER1_RECT, PLAYER2_TEXT,\
      PLAYER2_RECT, PRESS_ENTER_TEXT, PRESS_ENTER_RECT, END_GAME_TEXT, \
@@ -27,7 +26,8 @@ def get_row_col_from_mouse(pos):
     return row, col
 
 
-def main_menu():  # main menu screen
+def main_menu():
+    # main menu screen
     pygame.display.set_caption('Main menu')
 
     while True:
@@ -139,67 +139,10 @@ def gamemode_menu():
                     error_message()
 
                 if COMPUTER_BUTTON.checkForInput(gamemode_mouse_pos):
-                    computer_difficulty_menu()
+                    error_message()
 
                 if BACK_BUTTON.checkForInput(gamemode_mouse_pos):
                     main_menu()
-
-        pygame.display.update()
-
-
-def computer_difficulty_menu():
-    pygame.display.set_caption("Computer difficulty selection")
-
-    while True:
-        WIN.blit(BACKGROUND, (0, 0))
-
-        computer_difficulty_mouse_pos = pygame.mouse.get_pos()
-
-        EASY_BUTTON = Button(pos=(WIDTH / 2, HEIGHT / 3),
-                             font=SMALL_FONT,
-                             image=BUTTON,
-                             base_color=BLACK,
-                             hovering_color=WHITE,
-                             text_input="Easy")
-
-        INTERMEDIATE_BUTTON = Button(pos=(WIDTH / 2, 5 * HEIGHT / 12),
-                                     font=SMALL_FONT,
-                                     image=BUTTON,
-                                     base_color=BLACK,
-                                     hovering_color=WHITE,
-                                     text_input="Intermediate")
-
-        HARD_BUTTON = Button(pos=(WIDTH / 2, HEIGHT / 2),
-                             font=SMALL_FONT,
-                             image=BUTTON,
-                             base_color=BLACK,
-                             hovering_color=WHITE,
-                             text_input="Hard")
-
-        BACK_BUTTON = Button(pos=(WIDTH / 2, 11 * HEIGHT / 12),
-                             font=SMALL_FONT,
-                             image=BUTTON,
-                             base_color=BLACK,
-                             hovering_color=WHITE,
-                             text_input="Back")
-
-        WIN.blit(SELECT_COMPUTER_DIFFICULTY_TEXT,
-                 SELECT_COMPUTER_DIFFICULTY_RECT)
-
-        for button in [
-                EASY_BUTTON, INTERMEDIATE_BUTTON, HARD_BUTTON, BACK_BUTTON
-        ]:
-            button.changeTextColor(computer_difficulty_mouse_pos)
-            button.update(WIN)
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if BACK_BUTTON.checkForInput(computer_difficulty_mouse_pos):
-                    gamemode_menu()
 
         pygame.display.update()
 
@@ -458,7 +401,6 @@ def play():  # main game loop
                 PICK_BUTTON.update(WIN)
             else:
                 WIN.blit(STOCK_EMPTY_TEXT, STOCK_EMPTY_RECT)
-
         pygame.display.update()
 
 

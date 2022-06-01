@@ -7,6 +7,12 @@ from .half_domino import HalfDomino
 
 
 class Board(list):
+    '''
+    The Board class represents the game board.
+    It takes care of all the movements of the pieces,
+    their creation and deletion, as well as drawing of
+    the board on the screen.
+    '''
     # internal representation of the board: 2D list
     def __init__(self, dominoes_per_player=7):
         assert dominoes_per_player <= 14
@@ -24,6 +30,9 @@ class Board(list):
         # the board is automatically created
 
     def drawBackground(self, win):
+        '''
+        Draws the background of the game board (graphic representation).
+        '''
         # draw the background of the board in the window (GUI)
         win.fill(LIGHT_CYAN)
         for row in range(ROWS):
@@ -38,8 +47,12 @@ class Board(list):
                                       SQUARE_SIZE, SQUARE_SIZE))
 
     def fillDominoValues(self):
-        # fills the domino_values variable with all the values
-        # possible for dominoes
+        '''
+        Creates the internal representations of the dominoes
+        (tuples of 2 values).
+        Used to fill the domino_values variable with all the
+        possible dominoes (28).
+        '''
         # represents the stock at the beginning of the game
         for i in range(7):
             for j in range(7):
@@ -48,6 +61,11 @@ class Board(list):
                         self.domino_values.append((i, j))
 
     def fromStockToHand(self, row, col, player):
+        '''
+        Complements the create_board method.
+        Selects a random pair of values from the deck and adds
+        these two half-dominoes to the list that makes up the player's hand.
+        '''
         # select a random domino value from stock
         # create the 2 corresponding half dominoes
         # add them to the internal representation of the board,
@@ -69,7 +87,9 @@ class Board(list):
         return domino_value
 
     def pickPiece(self, row, col, player):
-        # pick a piece from the stock if a player can't play
+        '''
+        Picks a piece from the stock if a player can't play.
+        '''
         domino_value = self.domino_values[randint(0,
                                                   len(self.domino_values) -
                                                   1)]  # random domino value
@@ -82,8 +102,11 @@ class Board(list):
         return domino_value
 
     def createBoard(self):
-        # create internal representation of the board
-        # at the beginning of the game
+        '''
+        Creates the internal representation of the board (2-dimensional list).
+        It randomly assigns the dominoes to the players and initializes
+        the squares of the game area with "x".
+        '''
         # represents the game setup: dealing dominoes to the players
         self.fillDominoValues()
         for row in range(ROWS):
@@ -105,6 +128,9 @@ class Board(list):
                     self[row].append('x')
 
     def draw(self, win, player):
+        '''
+        Graphically represents the background and the pieces.
+        '''
         # draw the background and the dominoes in the window (GUI)
         self.drawBackground(win)
         for row in range(ROWS):
@@ -130,14 +156,26 @@ class Board(list):
                             piece.drawHidden(win)
 
     def fromHandToBoard(self, piece, row, col):
+        '''
+        Allows moving a half-domino on the board.
+        '''
         self[piece.row][piece.col], self[row][col] = self[row][col], self[
             piece.row][piece.col]
         piece.fromHandToBoard(row, col)
 
     def getPiece(self, row, col):
+        '''
+        Returns the piece at the given row and column on the board.
+        '''
         return self[row][col]
 
     def getNeighbors(self, piece):
+        '''
+        Allows the modification of the instance variable piece.neighbors,
+        a dictionary associating to each direction (top, bottom, left, right)
+        0 if there is no domino on the neighbouring square
+        in this direction, and 1 if there is one.
+        '''
         neighbors = {'top': 0, 'bottom': 0, 'left': 0, 'right': 0}
         if self.getPiece(piece.row - 1, piece.col) != 'x':
             neighbors['top'] = 1

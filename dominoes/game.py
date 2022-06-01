@@ -4,6 +4,11 @@ from .constants import PLAYER1, PLAYER2, ROWS, COLS
 
 
 class Game:
+    '''
+    This class manages the operation of the game.
+    It allows the interaction between the two other
+    classes: Board and HalfDomino.
+    '''
     piece_nb = 1
     value_1 = 0
     value_2 = 0
@@ -15,6 +20,9 @@ class Game:
         self.win = win  # game window
 
     def _init(self):
+        '''
+        Initializes the game object.
+        '''
         self.selected = None
         self.board = Board()
         self.turn = PLAYER1
@@ -25,13 +33,22 @@ class Game:
         self.dominoes_in_stock = len(self.board.domino_values)
 
     def reset(self):
+        '''
+        Resets the game.
+        '''
         self._init()
 
     def update(self):
+        '''
+        Updates the game window.
+        '''
         # update the board
         self.board.draw(self.win, self.turn)
 
     def select(self, row, col):
+        '''
+        Selects a half-domino.
+        '''
         if self.selected:
             result = self._move(row, col)
             if not result:
@@ -47,6 +64,12 @@ class Game:
         return False
 
     def _move(self, row, col):
+        '''
+        Allows the movement of a half-domino on the board
+        if it is selected and the square where it is to be placed
+        is free and is one of the allowed squares.
+        Also removes this half-domino from the player's hand.
+        '''
         piece = self.board.getPiece(row, col)
         if self.selected and piece == 'x' and (row, col) in self.valid_moves:
             self.board.fromHandToBoard(self.selected, row, col)
@@ -69,6 +92,10 @@ class Game:
         return True
 
     def checkNeighbors(self, row, col):
+        '''
+        Checks for neighbors at the given row and column and
+        sets the valid moves.
+        '''
         top, bottom, left, right = 1, 1, 1, 1
         if self.board.getPiece(row - 1, col) != 'x':
             top = 0
@@ -90,6 +117,9 @@ class Game:
                 self.valid_moves.append(tuple(direction))
 
     def updateEndDominoes(self, piece_1, piece_2):
+        '''
+        Updates the instance variable end_dominoes.
+        '''
         for domino in self.end_dominoes:
             for i in range(len(domino)):
                 self.board.getNeighbors(domino[i])
@@ -101,6 +131,11 @@ class Game:
         self.end_dominoes.append((piece_1, piece_2))
 
     def browseMovesAngle(self, piece_1, piece_2):
+        '''
+        Returns a list of the allowed moves for the placement
+        of the first half-domino according to the position
+        of the previous domino, in case the last two dominoes form an angle.
+        '''
         moves = []
         if piece_1.neighbors['left'] == 1 and piece_2.neighbors['top'] == 1:
             moves.append((piece_2.row + 1, piece_2.col))
@@ -133,6 +168,12 @@ class Game:
         return moves
 
     def browseMovesStraight(self, piece):
+        '''
+        Returns a list of the allowed moves for the
+        placement of the first half-domino according
+        to the position of the previous domino, in the case the
+        last two dominoes are aligned.
+        '''
         moves = []
         if piece.neighbors['top'] == 0:
             moves.append((piece.row - 1, piece.col))
@@ -145,6 +186,11 @@ class Game:
         return moves
 
     def getValidMoves(self, piece):
+        '''
+        Browses all the possible game situations to return
+        the corresponding allowed moves,
+        using the methods browseMovesAngle() and browseMovesStraight().
+        '''
         moves = []
         if self.turn_nb == 1:
             for row in range(3, ROWS - 3):
@@ -206,19 +252,31 @@ class Game:
                     return [(Game.piece_1.row, Game.piece_1.col - 1)]
 
     def changeTurn(self):
+        '''
+        Changes the current turn to the other player.
+        '''
         if self.turn == PLAYER1:
             self.turn = PLAYER2
         else:
             self.turn = PLAYER1
 
     def resetTurn(self):
+        '''
+        Resets the current player.
+        '''
         self.previous_turn = self.turn
         self.turn = None
 
     def restoreTurn(self):
+        '''
+        Restores the state of the previous turn.
+        '''
         self.turn = self.previous_turn
 
     def removeDominoFromHand(self, value_1, value_2):
+        '''
+        Removes a domino from the player's hand.
+        '''
         if self.turn == PLAYER1:
             if (value_1, value_2) in self.board.player1_dominoes:
                 self.board.player1_dominoes.remove((value_1, value_2))
@@ -231,6 +289,10 @@ class Game:
                 self.board.player2_dominoes.remove((value_2, value_1))
 
     def pick(self):
+        '''
+        Adds a randomly chosen domino from the stock to a player
+        when the latter draws.
+        '''
         self.dominoes_in_stock -= 1
         if self.turn == PLAYER1:
             row = ROWS - 2
@@ -250,6 +312,9 @@ class Game:
             self.board.player2_dominoes.append(domino_value)
 
     def winner(self):
+        '''
+        Determines the winner of the game.
+        '''
         if len(self.board.player1_dominoes) == 0:
             return PLAYER1
         elif len(self.board.player2_dominoes) == 0:

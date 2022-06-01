@@ -46,6 +46,7 @@ ERROR_MESSAGE_RECT_1 = ERROR_MESSAGE_TEXT_1.get_rect(center=(WIDTH / 2,
                                                              HEIGHT / 8))
 ERROR_MESSAGE_RECT_2 = ERROR_MESSAGE_TEXT_2.get_rect(center=(WIDTH / 2,
                                                              HEIGHT / 4))
+
 # images
 BUTTON = pygame.transform.scale(pygame.image.load("assets/purple_button.png"),
                                 (180, 120))

@@ -20,12 +20,6 @@ class Board(list):
         self.player3_dominoes = []
         self.player4_dominoes = []
 
-        # when the player puts a domino on the board,
-        # remove the  domino from the list
-        # when he picks a domino from the stock, add it to the list
-        # the list gives access to the number of dominoes
-        # left per player (using len())
-
         self.createBoard()  # when the object is created,
         # the board is automatically created
 
@@ -46,7 +40,7 @@ class Board(list):
     def fillDominoValues(self):
         # fills the domino_values variable with all the values
         # possible for dominoes
-        # (represents the stock at the beginning of the game)
+        # represents the stock at the beginning of the game
         for i in range(7):
             for j in range(7):
                 if (i, j) not in self.domino_values:
@@ -96,7 +90,7 @@ class Board(list):
             # rows 1 & 15 will be added when putting
             # the 1st domino on rows 0 & 14
             if row != 1 and row != ROWS - 1:
-                self.append([])  # 1 list per row
+                self.append([])  # 1 list represents a row
             for col in range(COLS):
                 if col < self.dominoes_per_player:
                     if row == 0:

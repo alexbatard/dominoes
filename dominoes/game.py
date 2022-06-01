@@ -33,8 +33,6 @@ class Game:
 
     def select(self, row, col):
         if self.selected:
-            # if self.turn_nb == 1:
-            #     result = self._first_move(row, col)
             result = self._move(row, col)
             if not result:
                 self.selected = None
@@ -43,47 +41,16 @@ class Game:
             piece = self.board.getPiece(row, col)
             if piece != 'x' and piece.player == self.turn:
                 self.selected = piece
-                self.valid_moves = self.getValidMoves(piece)
-                print(self.valid_moves)
+                self.valid_moves = self.getValidMoves(self.selected)
                 return True
 
         return False
 
-    # def _first_move(self, row, col):
-    #     piece = self.board.getPiece(row, col)
-    #     if self.selected and piece == 'x':
-    #         self.board.fromHandToBoard(self.selected, row, col)
-    #         if Game.piece_nb == 1:
-    #             Game.piece_1 = self.selected
-    #             Game.piece_nb += 1
-    #         elif Game.piece_nb == 2:
-    #             Game.piece_2 = self.selected
-    #             Game.piece_nb -= 1
-    #             self.checkNeighbors(,)
-    #             self.checkNeighbors(row, col)
-    #             print(self.valid_moves)
-    #             self.removeDominoFromHand(Game.piece_1.value,
-    #                                       Game.piece_2.value)
-    #             self.turn_nb += 1
-    #             self.resetTurn()
-    #     else:
-    #         return False
-
-    #     return True
-
     def _move(self, row, col):
         piece = self.board.getPiece(row, col)
         if self.selected and piece == 'x' and (row, col) in self.valid_moves:
-            # if Game.piece_nb == 1:
-            #     if self.previous_coords_1[0] == self.previous_coords_2[0]:
-            #         if row != self.previous_coords_1[0]:
-
             self.board.fromHandToBoard(self.selected, row, col)
             self.board.getNeighbors(self.selected)
-            # if (row, col) in self.valid_moves[0:4]:
-            #     del self.valid_moves[0:4]
-            # else:
-            #     del self.valid_moves[4:8]
             if Game.piece_nb == 1:
                 Game.piece_1 = self.selected
                 Game.piece_nb += 1
@@ -186,26 +153,28 @@ class Game:
             return moves
         elif Game.piece_nb == 1:
             for domino in self.end_dominoes:
-                print(domino)
-                # print(domino[0].neighbors)
-                # print(domino[1].neighbors)
                 if (domino[0].neighbors['top'] == 1
                         or domino[0].neighbors['bottom']
                         == 1) and (domino[0].neighbors['left'] == 1
                                    or domino[0].neighbors['right'] == 1):
-                    moves += self.browseMovesAngle(domino[0], domino[1])
+                    if domino[0].value == piece.value:
+                        moves += self.browseMovesAngle(domino[0], domino[1])
                 elif (domino[1].neighbors['top'] == 1
                       or domino[1].neighbors['bottom']
                       == 1) and (domino[1].neighbors['left'] == 1
                                  or domino[1].neighbors['right'] == 1):
-                    moves += self.browseMovesAngle(domino[1], domino[0])
+                    if domino[1].value == piece.value:
+                        moves += self.browseMovesAngle(domino[1], domino[0])
                 else:
                     if self.turn_nb == 2:
-                        return self.browseMovesStraight(
-                            domino[0]) + self.browseMovesStraight(domino[1])
-                    elif domino[0].getNeighborNumber() == 1:
+                        if domino[0].value == piece.value:
+                            moves += self.browseMovesStraight(domino[0])
+                        if domino[1].value == piece.value:
+                            moves += self.browseMovesStraight(domino[1])
+                    elif domino[0].getNeighborNumber(
+                    ) == 1 and domino[0].value == piece.value:
                         moves += self.browseMovesStraight(domino[0])
-                    else:
+                    elif domino[1].value == piece.value:
                         moves += self.browseMovesStraight(domino[1])
             return moves
         else:

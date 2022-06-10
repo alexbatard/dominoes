@@ -58,7 +58,8 @@ class Game:
             piece = self.board.getPiece(row, col)
             if piece != 'x' and piece.player == self.turn:
                 self.selected = piece
-                self.valid_moves = self.getValidMoves(self.selected)
+                self.valid_moves = self.getValidMoves(piece)
+                print(self.valid_moves)
                 return True
 
         return False
@@ -192,38 +193,48 @@ class Game:
         using the methods browseMovesAngle() and browseMovesStraight().
         '''
         moves = []
-        if self.turn_nb == 1:
-            for row in range(3, ROWS - 3):
-                for col in range(COLS):
-                    moves.append((row, col))
-            return moves
-        elif Game.piece_nb == 1:
-            for domino in self.end_dominoes:
-                if (domino[0].neighbors['top'] == 1
-                        or domino[0].neighbors['bottom']
-                        == 1) and (domino[0].neighbors['left'] == 1
-                                   or domino[0].neighbors['right'] == 1):
-                    if domino[0].value == piece.value:
-                        moves += self.browseMovesAngle(domino[0], domino[1])
-                elif (domino[1].neighbors['top'] == 1
-                      or domino[1].neighbors['bottom']
-                      == 1) and (domino[1].neighbors['left'] == 1
-                                 or domino[1].neighbors['right'] == 1):
-                    if domino[1].value == piece.value:
-                        moves += self.browseMovesAngle(domino[1], domino[0])
-                else:
-                    if self.turn_nb == 2:
+        if Game.piece_nb == 1:
+            if self.turn_nb == 1:
+                for row in range(3, ROWS - 3):
+                    for col in range(COLS):
+                        moves.append((row, col))
+                return moves
+            else:
+                for domino in self.end_dominoes:
+                    if (domino[0].neighbors['top'] == 1
+                            or domino[0].neighbors['bottom']
+                            == 1) and (domino[0].neighbors['left'] == 1
+                                       or domino[0].neighbors['right'] == 1):
                         if domino[0].value == piece.value:
-                            moves += self.browseMovesStraight(domino[0])
+                            moves += self.browseMovesAngle(
+                                domino[0], domino[1])
+                    elif (domino[1].neighbors['top'] == 1
+                          or domino[1].neighbors['bottom']
+                          == 1) and (domino[1].neighbors['left'] == 1
+                                     or domino[1].neighbors['right'] == 1):
                         if domino[1].value == piece.value:
+                            moves += self.browseMovesAngle(
+                                domino[1], domino[0])
+                    else:
+                        if self.turn_nb == 2:
+                            if domino[0].value == piece.value:
+                                moves += self.browseMovesStraight(domino[0])
+                            if domino[1].value == piece.value:
+                                moves += self.browseMovesStraight(domino[1])
+                        elif domino[0].getNeighborNumber(
+                        ) == 1 and domino[0].value == piece.value:
+                            moves += self.browseMovesStraight(domino[0])
+                        elif domino[1].value == piece.value:
                             moves += self.browseMovesStraight(domino[1])
-                    elif domino[0].getNeighborNumber(
-                    ) == 1 and domino[0].value == piece.value:
-                        moves += self.browseMovesStraight(domino[0])
-                    elif domino[1].value == piece.value:
-                        moves += self.browseMovesStraight(domino[1])
-            return moves
+                return moves
         else:
+            if self.turn_nb == 1:
+                moves += [(Game.piece_1.row - 1, Game.piece_1.col),
+                          (Game.piece_1.row + 1, Game.piece_1.col),
+                          (Game.piece_1.row, Game.piece_1.col - 1),
+                          (Game.piece_1.row, Game.piece_1.col + 1)]
+                return moves
+
             if Game.piece_1.neighbors['top'] == 1:
                 prev_piece = self.board.getPiece(Game.piece_1.row - 1,
                                                  Game.piece_1.col)
